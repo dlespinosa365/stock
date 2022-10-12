@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\ProductTypeComponent;
+use App\Http\Livewire\ProviderComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +29,6 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/tipo-de-producto', ProductTypeComponent::class)->name('tipo-de-producto');
+    Route::get('/provedores', ProviderComponent::class)->name('provedores');
+
 });

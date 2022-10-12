@@ -1,0 +1,102 @@
+<?php
+
+namespace App\Http\Livewire;
+use Livewire\WithPagination;
+use Livewire\Component;
+use App\Models\Provider;
+
+class ProviderComponent extends Component
+{
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    public $name;
+    public $description;
+    public $phone;
+    public $idProvider;
+    public $search = '';
+
+    public function render()
+    {
+        $providers = Provider::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(2);
+        return view('livewire.provider-list', [
+               'providers' => $providers
+            ])
+            ->layout('layouts.app',
+                [
+                    'header' => 'Listado de proveedores'
+                ]
+            );
+    }
+
+    public function resetForm()
+    {
+        $this->name = '';
+        $this->description = '';
+        $this->phone = '';
+    }
+
+    protected function rules()
+    {
+        return [
+            'name' => 'required|string|max:191',
+            'phone' => 'nullable|numeric',
+            'description' => 'nullable|string|max:191'
+        ];
+    }
+
+    public function updated($fields)
+    {
+        $this->validateOnly($fields);
+    }
+
+    public function store()
+    {
+        $validatedData = $this->validate();
+        Provider::create($validatedData);
+        session()->flash('message', 'Proveedor creado.');
+        $this->resetForm();
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'createProvider']);
+    }
+
+    public function update()
+    {
+        $validatedData = $this->validate();
+        Provider::where('id', $this->idProvider)->update([
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'phone' => $validatedData['phone'],
+        ]);
+        session()->flash('message', 'Proveedor actualizado.');
+        $this->resetForm();
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProvider']);
+    }
+
+    public function edit(int $id)
+    {
+        $provider = Provider::find($id);
+        if ($provider) {
+            $this->idProvider = $provider->id;
+            $this->name = $provider->name;
+            $this->description = $provider->description;
+            $this->phone = $provider->phone;
+        }
+        else {
+            return redirect()->to('/provedores');
+        }
+    }
+
+    public function delete(int $id)
+    {
+        $this->idProvider = $id;
+    }
+
+    public function remove()
+    {
+        Provider::find($this->idProvider)->delete();
+        session()->flash('message', 'Proveedor eliminado.');
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteProvider']);
+    }
+}
