@@ -18,6 +18,12 @@ return new class extends Migration
             $table->timestamps();
             $table->date('trigger_date');
             $table->boolean('is_sended');
+
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
+
+            $table->unsignedBigInteger('location_id');
+            $table->foreign('location_id')->references('id')->on('locations')->cascadeOnDelete();
         });
     }
 

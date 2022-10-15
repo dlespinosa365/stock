@@ -20,6 +20,9 @@
                 <x-jet-nav-link href="{{ route('provedores') }}" :active="request()->routeIs('provedores')">
                     {{ __('Proveedores') }}
                 </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('clientes') }}" :active="request()->routeIs('clientes')">
+                    {{ __('Clientes') }}
+                </x-jet-nav-link>
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav align-items-baseline">
