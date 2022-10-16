@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\ProductTypeComponent;
+use App\Http\Livewire\MovemenTypeComponent;
 use App\Http\Livewire\ProviderComponent;
 use App\Http\Livewire\CustomerComponent;
 use Illuminate\Support\Facades\Route;
@@ -27,6 +28,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/tipo-de-producto', ProductTypeComponent::class)->name('tipo-de-producto');
+    Route::get('/tipo-de-movimiento', MovemenTypeComponent::class)->name('tipo-de-movimiento');
     Route::get('/provedores', ProviderComponent::class)->name('provedores');
     Route::get('/clientes', CustomerComponent::class)->name('clientes');
 
