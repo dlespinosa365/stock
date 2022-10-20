@@ -44,7 +44,7 @@ class MovemenTypeComponent extends Component
     {
         $this->validateOnly($fields);
     }
-    
+
     public function store()
     {
         $validatedData = $this->validate();

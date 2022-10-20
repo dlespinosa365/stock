@@ -11,7 +11,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-                <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-jet-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
                     {{ __('Inicio') }}
                 </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('tipo-de-producto') }}" :active="request()->routeIs('tipo-de-producto')">
@@ -23,10 +23,13 @@
                 <x-jet-nav-link href="{{ route('provedores') }}" :active="request()->routeIs('provedores')">
                     {{ __('Proveedores') }}
                 </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('locaciones') }}" :active="request()->routeIs('locaciones')">
+                    {{ __('locaciones') }}
+                </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('clientes') }}" :active="request()->routeIs('clientes')">
                     {{ __('Clientes') }}
                 </x-jet-nav-link>
-                
+
             </ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav align-items-baseline">

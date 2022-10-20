@@ -26,21 +26,20 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @forelse ($movementTypes as $movementType)
                         <tr>
                             <td>{{ $movementType->id }}</td>
                             <td>{{ $movementType->name }}</td>
                             <td>
-                                <button type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#updatemovementType"
-                                    class="btn btn-outline-primary"
-                                    wire:click="edit({{ $movementType->id }})">Editar</button>
-                                <button type="button"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deletemovementType"
-                                    class="btn btn-outline-danger"
-                                    wire:click="delete({{ $movementType->id }})">Eliminar</button>
+                                @if ($movementType->id !== 1)
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#updateMovementType"
+                                        class="btn btn-outline-primary"
+                                        wire:click="edit({{ $movementType->id }})">Editar</button>
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#deleteMovementType"
+                                        class="btn btn-outline-danger"
+                                        wire:click="delete({{ $movementType->id }})">Eliminar</button>
+                                @endif
                             </td>
                         </tr>
                     @empty
