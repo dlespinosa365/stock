@@ -6,7 +6,7 @@
             <input type="search" wire:model="search" class="form-control float-end mx-2" placeholder="Buscar..."
                 style="width: 230px" />
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                data-bs-target="#createLocationType">Nuevo</button>
+                data-bs-target="#createLocation">Nuevo</button>
         </div>
         @if (session()->has('message'))
             <br>

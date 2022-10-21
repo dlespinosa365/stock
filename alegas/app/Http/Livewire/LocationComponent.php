@@ -11,9 +11,9 @@ class LocationComponent extends Component
     use WithPagination;
     public $search = '';
     public $name;
-    public $adress;
+    public $address;
     public $phone;
-    public $Location_type;
+    public $location_type;
 
 
     public function render()
@@ -34,13 +34,17 @@ class LocationComponent extends Component
     public function resetForm()
     {
         $this->name = '';
+        $this->address = '';
+        $this->phone = '';
+        $this->location_type = '';
     }
     protected function rules()
     {
         return [
             'name' => 'required|string',
-            'adress' => 'required|string',
+            'address' => 'required|string',
             'phone' => 'required|integer',
+            'location_type' => 'required|integer',
         ];
     }
     public function updated($fields)
@@ -50,9 +54,14 @@ class LocationComponent extends Component
     public function store()
     {
         $validatedData = $this->validate();
-        Location::create($validatedData);
-        session()->flash('message', 'Locacion creada.');
+        $location = new Location();
+        $location->name = $validatedData['name'];
+        $location->address = $validatedData['address'];
+        $location->phone = $validatedData['phone'];
+        $location->location_type = $validatedData['location_type'];
+        $location->save();
+        session()->flash('message', 'Unicacion creada.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createLocationType']);
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'createLocation']);
     }
 }

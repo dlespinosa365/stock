@@ -65,6 +65,9 @@ class ProductComponent extends Component
     public function resetForm()
     {
         $this->serial_number = '';
+        $this->provider_id = '';
+        $this->product_type_id = '';
+        $this->location_id = '';
     }
 
     public function store()
@@ -87,6 +90,15 @@ class ProductComponent extends Component
         $this->resetForm();
         $this->dispatchBrowserEvent('close-modal', ['id' => 'createProduct']);
 
+    }
+
+    public function markAsOut(int $product_id) {
+        $product = Product::find($product_id);
+        $product->is_out = true;
+        $product->save();
+        session()->flash('message', 'El producto ha sido creado.');
+        $this->resetForm();
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'markAsOutProduct']);
     }
 
     public function checkIfProductIsOut()
