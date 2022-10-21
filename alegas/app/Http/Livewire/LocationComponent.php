@@ -11,7 +11,7 @@ class LocationComponent extends Component
     use WithPagination;
     public $search = '';
     public $name;
-    public $adress;
+    public $address;
     public $phone;
     public $LocationType;
 
@@ -39,8 +39,9 @@ class LocationComponent extends Component
     {
         return [
             'name' => 'required|string',
-            'adress' => 'required|string',
-            'phone' => 'required|integer',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'LocationType' => 'required|string',
         ];
     }
     public function updated($fields)
@@ -50,6 +51,7 @@ class LocationComponent extends Component
     public function store()
     {
         $validatedData = $this->validate();
+        dd($validatedData);
         Location::create($validatedData);
         session()->flash('message', 'Locacion creada.');
         $this->resetForm();

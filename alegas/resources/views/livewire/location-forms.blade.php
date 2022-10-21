@@ -1,5 +1,6 @@
 
 <!-- create Modal -->
+
 <div wire:ignore.self class="modal fade" id="createLocationType" tabindex="-1" role="dialog" aria-labelledby="createLocationTypeLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -18,14 +19,14 @@
                         @error('name') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Direccion</label>
-                        <input type="text" class="form-control" id="adress" placeholder="" wire:model="adress">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="address" class="form-label">Direccion</label>
+                        <input type="text" class="form-control" id="address" placeholder="" wire:model="address">
+                        @error('address') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Telefono</label>
+                        <label for="phone" class="form-label">Telefono</label>
                         <input type="text" class="form-control" id="phone" placeholder="" wire:model="phone">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <select class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
