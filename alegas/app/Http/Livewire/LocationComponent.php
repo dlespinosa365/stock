@@ -13,7 +13,7 @@ class LocationComponent extends Component
     public $name;
     public $adress;
     public $phone;
-    public $LocationType;
+    public $Location_type;
 
 
     public function render()

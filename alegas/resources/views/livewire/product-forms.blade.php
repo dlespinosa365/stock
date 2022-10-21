@@ -1,11 +1,11 @@
 
 <!-- create Modal -->
-<div wire:ignore.self class="modal fade" id="createLocationType" tabindex="-1" role="dialog" aria-labelledby="createLocationTypeLabel"
+<div wire:ignore.self class="modal fade" id="createProduct" tabindex="-1" role="dialog" aria-labelledby="createProductModelLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createLocationTypeLabel">Crear nueva locacion</h5>
+                <h5 class="modal-title" id="createProductModelLabel">Nuevo Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="resetForm">
                     <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -13,25 +13,39 @@
             <form wire:submit.prevent="store">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="name" placeholder="" wire:model="name">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="serial_number" class="form-label">Numero de Serie</label>
+                        <input type="text" class="form-control" id="serial_number" placeholder="" wire:model="serial_number">
+                        @error('serial_number') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Direccion</label>
-                        <input type="text" class="form-control" id="adress" placeholder="" wire:model="adress">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="product_type_id" class="form-label">Tipo</label>
+                        <select class="form-select" aria-label="Tipo de producto" wire:model="product_type_id">
+                            <option value="">Seleccione un Tipo de Producto</option>
+                            @foreach ($productTypes as $productType)
+                                <option value="{{ $productType->id }}">{{ $productType->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('product_type_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">Telefono</label>
-                        <input type="text" class="form-control" id="phone" placeholder="" wire:model="phone">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="provider_id" class="form-label">Proveedor</label>
+                        <select class="form-select" aria-label="Proveedor" wire:model="provider_id">
+                            <option value="">Seleccione un Proveedor</option>
+                            @foreach ($providers as $provider)
+                                <option value="{{ $provider->id }}">{{ $provider->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('provider_id') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
-                    <select class="form-select" aria-label="Seleccione una opcion" wire:model="location_type">
-                        <option selected>Seleccione una opcion</option>
-                        <option value="{{ \App\Models\Location::$LOCATION_TYPE_INTERN }}">Interno</option>
-                        <option value="{{ \App\Models\Location::$LOCATION_TYPE_TRUCK }}">Camion</option>
-                      </select>
+                    <div class="mb-3">
+                        <label for="location_id" class="form-label">Ubicacion</label>
+                        <select class="form-select" aria-label="Unicacion" wire:model="location_id">
+                            @foreach ($locations as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('location_id') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
 
                 </div>
                 <div class="modal-footer">
@@ -44,12 +58,12 @@
 </div>
 
 <!-- update Modal -->
-<div wire:ignore.self class="modal fade" id="updateLocation" tabindex="-1" role="dialog" aria-labelledby="updateLocationType"
+<div wire:ignore.self class="modal fade" id="updateProduct" tabindex="-1" role="dialog" aria-labelledby="updateProductLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Editar Tipo de Locacion</h5>
+                <h5 class="modal-title">Editar Tipo de Movimiento</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="resetForm">
                     <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -73,12 +87,12 @@
 
 
 <!-- delete Modal -->
-<div wire:ignore.self class="modal fade" id="deleteLocation" tabindex="-1" aria-labelledby="deleteLocationLabel"
+<div wire:ignore.self class="modal fade" id="deleteProduct" tabindex="-1" aria-labelledby="deleteProductLabel"
     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteLocationLabel">Eliminar</h5>
+                <h5 class="modal-title" id="deleteProductLabel">Eliminar</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click="resetForm"
                     aria-label="Close"></button>
             </div>
