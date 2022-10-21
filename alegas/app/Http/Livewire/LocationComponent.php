@@ -13,7 +13,9 @@ class LocationComponent extends Component
     public $name;
     public $address;
     public $phone;
-    public $LocationType;
+    public $location_type;
+    public $locationTypeId;
+
 
 
     public function render()
@@ -34,14 +36,17 @@ class LocationComponent extends Component
     public function resetForm()
     {
         $this->name = '';
+        $this->address = '';
+        $this->phone = '';
+        $this->location_type = '';
     }
     protected function rules()
     {
         return [
             'name' => 'required|string',
             'address' => 'required|string',
-            'phone' => 'required|string',
-            'LocationType' => 'required|string',
+            'phone' => 'required|integer',
+            'location_type' => 'required|integer',
         ];
     }
     public function updated($fields)
@@ -51,10 +56,51 @@ class LocationComponent extends Component
     public function store()
     {
         $validatedData = $this->validate();
-        dd($validatedData);
-        Location::create($validatedData);
-        session()->flash('message', 'Locacion creada.');
+        $location = new Location();
+        $location->name = $validatedData['name'];
+        $location->address = $validatedData['address'];
+        $location->phone = $validatedData['phone'];
+        $location->location_type = $validatedData['location_type'];
+        $location->save();
+        session()->flash('message', 'Unicacion creada.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createLocationType']);
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'createLocation']);
+    }
+    public function update()
+    {
+        $validatedData = $this->validate();
+        Location::where('id', $this->locationTypeId)->update([
+            'name' => $validatedData['name'],
+            'address' => $validatedData['address'],
+            'phone' => $validatedData['phone'],
+            'location_type' => $validatedData['location_type'],
+        ]);
+        session()->flash('message', 'Localización actualizada.');
+        $this->resetForm();
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateLocation']);
+    }
+    public function edit(int $id)
+    {
+        $location = Location::find($id);
+        if ($location) {
+            $this->locationTypeId = $location->id;
+            $this->name = $location->name;
+            $this->address = $location->address;
+            $this->phone = $location->phone;
+        }
+        else {
+            return redirect()->to('/locaciones');
+        }
+    }
+    public function delete(int $id)
+    {
+        $this->locationTypeId = $id;
+    }
+
+    public function remove()
+    {
+        Location::find($this->locationTypeId)->delete();
+        session()->flash('message', 'Localización eliminada.');
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteLocation']);
     }
 }

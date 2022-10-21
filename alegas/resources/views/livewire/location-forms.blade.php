@@ -1,12 +1,10 @@
-
 <!-- create Modal -->
-
-<div wire:ignore.self class="modal fade" id="createLocationType" tabindex="-1" role="dialog" aria-labelledby="createLocationTypeLabel"
-    aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="createLocation" tabindex="-1" role="dialog"
+    aria-labelledby="createLocationLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createLocationTypeLabel">Crear nueva locacion</h5>
+                <h5 class="modal-title" id="createLocationLabel">Crear nueva locacion</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="resetForm">
                     <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -16,27 +14,40 @@
                     <div class="mb-3">
                         <label for="name" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="name" placeholder="" wire:model="name">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="address" class="form-label">Direccion</label>
+                        <label for="name" class="form-label">Dirección</label>
                         <input type="text" class="form-control" id="address" placeholder="" wire:model="address">
-                        @error('address') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('address')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Telefono</label>
+                        <label for="phone" class="form-label">Teléfono</label>
                         <input type="text" class="form-control" id="phone" placeholder="" wire:model="phone">
-                        @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('phone')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">Interno</option>
-                        <option value="2">Camion</option>
-                      </select>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Ubicación</label>
+                        <select class="form-select" aria-label="Seleccione una opcion" wire:model="location_type">
+                            <option selected>Seleccione una opcion</option>
+                            <option value="{{ \App\Models\Location::$LOCATION_TYPE_INTERN }}">Interno</option>
+                            <option value="{{ \App\Models\Location::$LOCATION_TYPE_TRUCK }}">Camion</option>
+                        </select>
+                        @error('location_type')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal" wire:click="resetForm"> Cerrar</button>
+                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                        wire:click="resetForm"> Cerrar</button>
                     <button type="submit" class="btn btn-sucess close-modal">Guardar</button>
                 </div>
             </form>
@@ -45,12 +56,12 @@
 </div>
 
 <!-- update Modal -->
-<div wire:ignore.self class="modal fade" id="updateLocation" tabindex="-1" role="dialog" aria-labelledby="updateLocationType"
-    aria-hidden="true">
+<div wire:ignore.self class="modal fade" id="updateLocation" tabindex="-1" role="dialog"
+    aria-labelledby="updateLocation" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Editar Tipo de Locacion</h5>
+                <h5 class="modal-title">Editar locaciones</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="resetForm">
                     <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -58,13 +69,41 @@
             <form wire:submit.prevent="update">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Tipo</label>
+                        <label for="name" class="form-label">Nombre</label>
                         <input type="text" class="form-control" id="name" placeholder="" wire:model="name">
-                        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="address" placeholder="" wire:model="address">
+                        @error('address')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" id="phone" placeholder="" wire:model="phone">
+                        @error('phone')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                    <div>
+                    <label for="location_type" class="form-label">Ubicación</label>
+                        <select class="form-select" aria-label="Seleccione una opcion" wire:model="location_type">
+                            <option selected>Seleccione una opcion</option>
+                            <option value="{{ \App\Models\Location::$LOCATION_TYPE_INTERN }}">Interno</option>
+                            <option value="{{ \App\Models\Location::$LOCATION_TYPE_TRUCK }}">Camion</option>
+                        </select>
+                        @error('location_type')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal" wire:click="resetForm"> Cerrar</button>
+                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                        wire:click="resetForm"> Cerrar</button>
                     <button type="submit" class="btn btn-sucess close-modal">Guardar</button>
                 </div>
             </form>

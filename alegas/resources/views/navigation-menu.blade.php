@@ -14,21 +14,25 @@
                 <x-jet-nav-link href="{{ route('inicio') }}" :active="request()->routeIs('inicio')">
                     {{ __('Inicio') }}
                 </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('productos') }}" :active="request()->routeIs('productos')">
+                    {{ __('Productos') }}
+                </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('provedores') }}" :active="request()->routeIs('provedores')">
+                    {{ __('Proveedores') }}
+                </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('clientes') }}" :active="request()->routeIs('clientes')">
+                    {{ __('Clientes') }}
+                </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('tipo-de-producto') }}" :active="request()->routeIs('tipo-de-producto')">
                     {{ __('Tipo de producto') }}
                 </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('tipo-de-movimiento') }}" :active="request()->routeIs('tipo-de-movimiento')">
                     {{ __('Tipo de movimiento') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('provedores') }}" :active="request()->routeIs('provedores')">
-                    {{ __('Proveedores') }}
-                </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('locaciones') }}" :active="request()->routeIs('locaciones')">
-                    {{ __('locaciones') }}
+                    {{ __('Locaciones') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('clientes') }}" :active="request()->routeIs('clientes')">
-                    {{ __('Clientes') }}
-                </x-jet-nav-link>
+
 
             </ul>
             <!-- Right Side Of Navbar -->

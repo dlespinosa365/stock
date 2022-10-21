@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\ProductComponent;
 use App\Http\Livewire\ProductTypeComponent;
 use App\Http\Livewire\MovemenTypeComponent;
 use App\Http\Livewire\ProviderComponent;
@@ -32,5 +33,6 @@ Route::middleware([
     Route::get('/locaciones', LocationComponent::class)->name('locaciones');
     Route::get('/provedores', ProviderComponent::class)->name('provedores');
     Route::get('/clientes', CustomerComponent::class)->name('clientes');
+    Route::get('/productos', ProductComponent::class)->name('productos');
 
 });
