@@ -20,10 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
 
-            $table->unsignedBigInteger('location_from_id');
+            $table->unsignedBigInteger('location_from_id')->nullable();
             $table->foreign('location_from_id')->references('id')->on('locations')->cascadeOnDelete();
 
-            $table->unsignedBigInteger('location_to_id');
+            $table->unsignedBigInteger('location_to_id')->nullable();
             $table->foreign('location_to_id')->references('id')->on('locations')->cascadeOnDelete();
 
             $table->unsignedBigInteger('movement_type_id');

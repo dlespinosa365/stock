@@ -15,6 +15,10 @@
 
         <!-- Scripts -->
         @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css"
+            rel="stylesheet"
+        />
     </head>
     <body class="font-sans antialiased bg-light">
 
@@ -37,6 +41,7 @@
         @livewireScripts
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
         <script>
             window.addEventListener('close-modal', event => {
                 console.log('closing modal', event.detail)

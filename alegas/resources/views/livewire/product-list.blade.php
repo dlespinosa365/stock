@@ -11,8 +11,8 @@
         @if (session()->has('message'))
             <br>
             <div class="col-md-12">
-                <div class="alert alert-success" role="alert">
-                    {{ session('message') }}
+                <div class="alert alert-{{ session('type') }}" role="alert">
+                    {!! session('message') !!}
                 </div>
             </div>
         @endif
@@ -23,7 +23,7 @@
                         <th>Id</th>
                         <th>Serie</th>
                         <th>Tipo</th>
-                        <th>Ubicacion</th>
+                        <th>Proveedor</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -34,15 +34,17 @@
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->serial_number }}</td>
                             <td>{{ $product->productType->name }}</td>
-                            <td>{{ $product->location->name }}</td>
+                            <td>{{ $product->provider?->name }}</td>
                             <td>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#updateLocation"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#updateProduct"
                                     class="btn btn-outline-primary"
                                     wire:click="edit({{ $product->id }})">Editar</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteLocation"
+
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#moveProduct"
                                     class="btn btn-outline-primary"
                                     wire:click="moveToCustomer({{ $product->id }})">Enviar a cliente</button>
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#deleteLocation"
+
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#markAsOutProduct"
                                     class="btn btn-outline-danger" wire:click="markAsOut({{ $product->id }})">Dar de
                                     baja</button>
 
