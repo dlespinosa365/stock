@@ -7,6 +7,7 @@ use App\Http\Livewire\ProviderComponent;
 use App\Http\Livewire\CustomerComponent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\LocationComponent;
+use App\Http\Livewire\MovementListComponent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,5 +35,6 @@ Route::middleware([
     Route::get('/provedores', ProviderComponent::class)->name('provedores');
     Route::get('/clientes', CustomerComponent::class)->name('clientes');
     Route::get('/productos', ProductComponent::class)->name('productos');
+    Route::get('/lista-movimiento', MovementListComponent::class)->name('lista-movimiento');
 
 });
