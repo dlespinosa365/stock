@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\MovementListComponent;
 use App\Http\Livewire\ProductComponent;
 use App\Http\Livewire\ProductTypeComponent;
 use App\Http\Livewire\MovemenTypeComponent;
@@ -34,5 +35,8 @@ Route::middleware([
     Route::get('/provedores', ProviderComponent::class)->name('provedores');
     Route::get('/clientes', CustomerComponent::class)->name('clientes');
     Route::get('/productos', ProductComponent::class)->name('productos');
+    Route::get('/listado-de-movimientos', MovementListComponent::class)->name('listado-de-movimientos');
 
 });
+Route::redirect('/', '/inicio'); // redirect for main route
+
