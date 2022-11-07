@@ -23,12 +23,13 @@
                 <x-jet-nav-link href="{{ route('clientes') }}" :active="request()->routeIs('clientes')">
                     {{ __('Clientes') }}
                 </x-jet-nav-link>
+                <x-jet-nav-link href="{{ route('listado-de-movimientos') }}" :active="request()->routeIs('listado-de-movimientos')">
+                    {{ __('Movimientos') }}
+                </x-jet-nav-link>
                 <x-jet-nav-link href="{{ route('tipo-de-producto') }}" :active="request()->routeIs('tipo-de-producto')">
                     {{ __('Tipo de producto') }}
                 </x-jet-nav-link>
-                <x-jet-nav-link href="{{ route('lista-movimiento') }}" :active="request()->routeIs('lista-movimiento')">
-                    {{ __('Movimientos') }}
-                </x-jet-nav-link>
+               
                 <x-jet-nav-link href="{{ route('tipo-de-movimiento') }}" :active="request()->routeIs('tipo-de-movimiento')">
                     {{ __('Tipo de movimiento') }}
                 </x-jet-nav-link>
