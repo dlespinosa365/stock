@@ -29,7 +29,7 @@
                 @endforeach
               </select>
         </div>
-        <div class="input-group date">
+        <!-- <div class="input-group date">
             <input type="text" class="form-control" datepicker="true" wire:model="date_from"
             onchange="this.dispatchEvent(new InputEvent('input'))">
             <div class="input-group-addon">
@@ -37,12 +37,34 @@
             </div>
         </div>
         <div class="input-group date">
-            <input type="text" class="form-control" datepicker="true" wire:model="date_to"
+            <input type="text" class="form-control" datepicker="true" wire:model="date_to" 
             onchange="this.dispatchEvent(new InputEvent('input'))">
             <div class="input-group-addon">
                 <span class="glyphicon glyphicon-th"></span>
             </div>
+        </div> -->
+        <form>
+        @csrf 
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <label for="date" class="col-form-label col-sm-2">DateFrom</label>
+                        <div class="col-sm-3">
+                            <input type="date" wire:model="date_from" class="form-control input-sm" id="from" name="from" >
+                        </div>
+                            <label for="date"class="col-form-lavel col-sm-2">DateTo</label>
+                            <div class="col-sm-3">
+                                <input type="date" wire:model="date_to" class="form-control input-sm" id="to" name="to">
+                            </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        </form>
         @if (session()->has('message'))
             <br>
             <div class="col-md-12">
