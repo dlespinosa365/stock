@@ -50,11 +50,11 @@
             <div class="row">
                 <div class="container-fluid">
                     <div class="form-group row">
-                        <label for="date" class="col-form-label col-sm-2">DateFrom</label>
+                        <label for="date" class="col-form-label col-sm-2">Desde: </label>
                         <div class="col-sm-3">
                             <input type="date" wire:model="date_from" class="form-control input-sm" id="from" name="from" >
                         </div>
-                            <label for="date"class="col-form-lavel col-sm-2">DateTo</label>
+                            <label for="date"class="col-form-lavel col-sm-2">Hasta: </label>
                             <div class="col-sm-3">
                                 <input type="date" wire:model="date_to" class="form-control input-sm" id="to" name="to">
                             </div>
