@@ -13,6 +13,7 @@ class Movement extends Model
     use HasFactory;
 
     protected $fillable = ['description'];
+
     public function movementType()
     {
         return $this->belongsTo(MovementType::class, 'movement_type_id');
@@ -31,5 +32,78 @@ class Movement extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFromLocation($query, $location)
+    {
+        if (!$location) {
+            return $query;
+        }
+        return $query->where('location_from_id', $location);
+    }
+
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeToLocation($query, $location)
+    {
+        if (!$location) {
+            return $query;
+        }
+        return $query->where('location_to_id', $location);
+    }
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDateFrom($query, $date)
+    {
+        if (!$date) {
+            return $query;
+        }
+        return $query->where('created_at', '>=', $date);
+    }
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDateTo($query, $date)
+    {
+        if (!$date) {
+            return $query;
+        }
+        return $query->where('created_at', '<=', $date);
+    }
+    /**
+     * Scope a query to only include users of a given type.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMovementType($query, $movement_type)
+    {
+        if (!$movement_type) {
+            return $query;
+        }
+        return $query->where('movement_type_id', $movement_type);
+    }
+
 
 }
