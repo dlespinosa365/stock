@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Movement;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use App\Observers\MovementObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        Movement::observe(MovementObserver::class);
     }
 }

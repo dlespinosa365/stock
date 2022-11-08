@@ -24,4 +24,27 @@ class Product extends Model
         return $this->belongsTo(Provider::class, 'provider_id');
     }
 
+    public function currentLocation()
+    {
+        return $this->belongsTo(Location::class, 'current_location_id');
+    }
+
+    public function scopeByCurrentLocation($query, $location_id) {
+        if (!$location_id) {
+            return $query;
+        }
+        return $query->where('current_location_id', $location_id);
+    }
+
+    public function scopeWithSerialNumber($query, $serial_number) {
+        if (!$serial_number) {
+            return $query;
+        }
+        return $query->where('serial_number', 'like', '%' . $serial_number . '%');
+    }
+
+    public function scopeIsOutFalse($query) {
+        return $query->where('is_out', 0);
+    }
+
 }

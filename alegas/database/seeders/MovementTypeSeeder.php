@@ -25,8 +25,12 @@ class MovementTypeSeeder extends Seeder
             'id' => 2
         ]);
         DB::table('movement_types')->insert([
-            'name' => 'Baja',
+            'name' => 'Baja de cliente',
             'id' => 3
+        ]);
+        DB::table('movement_types')->insert([
+            'name' => 'Baja de local',
+            'id' => 4
         ]);
     }
 }

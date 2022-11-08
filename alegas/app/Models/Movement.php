@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\MovementObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\MovementType;
@@ -32,6 +33,7 @@ class Movement extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
 
     /**
      * Scope a query to only include users of a given type.
@@ -104,6 +106,8 @@ class Movement extends Model
         }
         return $query->where('movement_type_id', $movement_type);
     }
+
+
 
 
 }

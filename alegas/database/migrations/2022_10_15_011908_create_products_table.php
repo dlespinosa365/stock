@@ -24,6 +24,9 @@ return new class extends Migration
 
             $table->unsignedBigInteger('provider_id')->nullable();
             $table->foreign('provider_id')->references('id')->on('providers')->nullOnDelete();
+
+            $table->unsignedBigInteger('current_location_id')->nullable();
+            $table->foreign('current_location_id')->references('id')->on('locations')->nullOnDelete();
         });
     }
 
