@@ -36,7 +36,6 @@ Route::middleware([
     Route::get('/clientes', CustomerComponent::class)->name('clientes');
     Route::get('/productos', ProductComponent::class)->name('productos');
     Route::get('/listado-de-movimientos', MovementListComponent::class)->name('listado-de-movimientos');
-
 });
 Route::redirect('/', '/inicio'); // redirect for main route
 
