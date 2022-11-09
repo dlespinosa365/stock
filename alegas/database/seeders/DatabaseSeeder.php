@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Database\Seeders\MovementTypeSeeder;
 use Database\Seeders\LocationSeeder;
+use Database\Seeders\AdminUsersSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,7 +19,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MovementTypeSeeder::class,
-            LocationSeeder::class
+            LocationSeeder::class,
+            AdminUsersSeeder::class
         ]);
     }
 }

@@ -24,6 +24,7 @@
                         <th>Serie</th>
                         <th>Tipo</th>
                         <th>Proveedor</th>
+                        <th>Ubicacion</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -35,6 +36,7 @@
                             <td>{{ $product->serial_number }}</td>
                             <td>{{ $product->productType?->name }}</td>
                             <td>{{ $product->provider?->name }}</td>
+                            <td>{{ $product->currentLocation?->name }}</td>
                             <td>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#updateProduct"
                                     class="btn btn-outline-primary"
@@ -52,7 +54,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">No se encontraron resultados</td>
+                            <td colspan="6">No se encontraron resultados</td>
                         </tr>
                     @endforelse
                 </tbody>

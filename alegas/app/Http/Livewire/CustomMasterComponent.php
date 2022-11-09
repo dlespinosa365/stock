@@ -25,4 +25,5 @@ class CustomMasterComponent extends Component
         session()->flash('type', 'info');
         session()->flash('message', $message);
     }
+
 }
