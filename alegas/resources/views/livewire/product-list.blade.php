@@ -33,7 +33,7 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->serial_number }}</td>
-                            <td>{{ $product->productType->name }}</td>
+                            <td>{{ $product->productType?->name }}</td>
                             <td>{{ $product->provider?->name }}</td>
                             <td>
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#updateProduct"
