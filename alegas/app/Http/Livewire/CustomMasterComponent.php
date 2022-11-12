@@ -26,4 +26,8 @@ class CustomMasterComponent extends Component
         session()->flash('message', $message);
     }
 
+    protected function log($title, $message) {
+        $this->dispatchBrowserEvent('log', ['title' => $title, 'message' => $message ]);
+    }
+
 }

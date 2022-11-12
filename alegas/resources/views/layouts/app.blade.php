@@ -38,8 +38,10 @@
 
         <script>
             window.addEventListener('close-modal', event => {
-                console.log('closing modal', event.detail)
                 $('#' + event.detail.id).modal('hide')
+            })
+            window.addEventListener('log', event => {
+                console.log(event.detail.title, event.detail.message)
             })
             $('input[datepicker="true"]').datepicker({
                 format: 'dd/mm/yyyy',
