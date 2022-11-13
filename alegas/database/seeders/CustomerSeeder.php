@@ -8,6 +8,8 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Models\Location;
+
 
 
 class CustomerSeeder extends Seeder
@@ -68,6 +70,27 @@ class CustomerSeeder extends Seeder
          * Buena suerte con el mismo principio haz el otro seeder de productos.
          *
          */
+        
+        $location = new Location();
+
+
+        $location->save();
+
+        DB::table('customers')->insert([
+            [
+            "externo" => $customersData->externo,
+            "nombre" => $customersData->nombre,
+            "social_reason" => $customersData->social_reason,
+            "location" => $location->id,
+            "address" => $customersData->address,
+            "rut" => $customersData->rut,
+            "phone" => $customersData->phone,
+            "zona" => $customersData->zona,
+            "email" => $customersData->email,
+            "departamento" => $customersData->departamento,
+            "source_url" => $customersData->source_url
+            ]
+        ]);
         return $customersData;
     }
 
