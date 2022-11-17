@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row mb-4">
             <div class="col-md-12 mb5">
-                <h5 class="card-title">Stock de productos</h5>
+                <h3 class="h3 my-4">Consulta de stock de producto</h3>
             </div>
             <div class="col-md-6">
                 <select class="form-select" aria-label="Ubicacion" wire:model="locationId">
@@ -13,7 +13,7 @@
                 </select>
             </div>
             <div class="col-md-6">
-                <input type="search" wire:model="serialNumber" class="form-control" placeholder="Buscar..." />
+                <input type="search" wire:model="serialNumber" class="form-control" placeholder="Numero de serie" />
             </div>
         </div>
         <div class="row">
@@ -78,7 +78,7 @@
 
                             @forelse ($lastMovements as $movement)
                                 <tr>
-                                    <td>{{ $movement->created_at }}</td>
+                                    <td>{{ $movement->created_at->diffForHumans() }}</td>
                                     <td>{{ $movement->locationFrom?->name }}</td>
                                     <td>{{ $movement->locationTo?->name }}</td>
                                     <td>{{ $movement->movementType?->name }}</td>

@@ -3,7 +3,10 @@
 namespace App\Observers;
 
 use App\Models\Movement;
+use App\Models\MovementType;
 use App\Models\Product;
+use App\Models\ProductMaintenance;
+use Illuminate\Support\Carbon;
 
 class MovementObserver
 {
@@ -18,6 +21,31 @@ class MovementObserver
         $product = Product::find($movement->product_id);
         $product->current_location_id = $movement->location_to_id;
         $product->save();
+
+        if ($movement->movement_type_id === MovementType::$SERVICIO) {
+            $this->findAndRemoveProductMaintenance($movement);
+            $this->createNewProductMaintenance($movement);
+        }
+        if ($movement->movement_type_id === MovementType::$BAJA_CLIENTE) {
+            $this->findAndRemoveProductMaintenance($movement);
+        }
+    }
+    public function createNewProductMaintenance(Movement $movement) {
+        $productMaintenance = new ProductMaintenance();
+        $productMaintenance->product_id = $movement->product_id;
+        $productMaintenance->location_id = $movement->location_to_id;
+        $productMaintenance->save();
+    }
+
+    public function findAndRemoveProductMaintenance(Movement $movement) {
+        ProductMaintenance::
+        where([
+            'product_id' => $movement->product_id,
+            'location_id' => $movement->location_to_id,
+            'is_sended' => false
+        ])
+        ->whereDate('trigger_date', '>=', Carbon::now()->toDateString()) // cuando no se ha triguereado aun
+        ->delete();
     }
 /**
      * Handle the Movement "updated" event.
@@ -31,4 +59,7 @@ class MovementObserver
         $product->current_location_id = $movement->location_to_id;
         $product->save();
     }
+
+
+
 }

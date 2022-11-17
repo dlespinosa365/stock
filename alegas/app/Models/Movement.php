@@ -107,7 +107,4 @@ class Movement extends Model
         return $query->where('movement_type_id', $movement_type);
     }
 
-
-
-
 }

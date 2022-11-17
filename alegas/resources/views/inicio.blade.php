@@ -5,16 +5,30 @@
         </h2>
     </x-slot>
     <div class="container">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-
-                  @livewire('stock-component')
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        @livewire('stock-component')
+                    </div>
                 </div>
-              </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        @livewire('movement-per-product-component')
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        @livewire('product-maintenance-list-component')
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
-    <x-jet-welcome />
 </x-app-layout>

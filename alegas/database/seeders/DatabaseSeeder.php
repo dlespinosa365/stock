@@ -9,6 +9,10 @@ use Database\Seeders\LocationSeeder;
 use Database\Seeders\AdminUsersSeeder;
 use Database\Seeders\ProviderSeeder;
 use Database\Seeders\CustomerSeeder;
+use Database\Seeders\ProductTypeSeeder;
+use Database\Seeders\ProductSeeder;
+
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +28,10 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             AdminUsersSeeder::class,
             ProviderSeeder::class,
-            CustomerSeeder::class,
+            // CustomerSeeder::class,
+            // ProductTypeSeeder::class,
+            ProductSeeder::class
+
         ]);
     }
 }

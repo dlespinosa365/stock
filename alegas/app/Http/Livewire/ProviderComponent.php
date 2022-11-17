@@ -20,7 +20,7 @@ class ProviderComponent extends Component
 
     public function render()
     {
-        $providers = Provider::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(2);
+        $providers = Provider::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(10);
         return view('livewire.provider-list', [
                'providers' => $providers
             ])

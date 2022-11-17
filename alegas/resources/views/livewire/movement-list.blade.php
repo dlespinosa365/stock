@@ -1,70 +1,62 @@
 <div>
-    <div class="container">
-        <div class="col-md-12 text-end">
-            <input type="search" wire:model="serial_number" class="form-control float-end mx-2" placeholder="Buscar..."
-                style="width: 230px" />
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <input type="search" wire:model="serial_number" class="form-control mx-2"
+                            placeholder="Numero de serie" style="width: 230px" />
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Hacia la ubicacion" wire:model="location_from_id">
+                            <option selected>Hacia la ubicacion</option>
+                            @foreach ($locations as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_to_id">
+                            <option selected>Desde la ubicacion</option>
+                            @foreach ($locations as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" aria-label="Tipo de movimiento" wire:model="movement_type_id">
+                            <option selected>Tipo</option>
+                            @foreach ($MovementTypes as $MovementType)
+                                <option value="{{ $MovementType->id }}">{{ $MovementType->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
-        </div>
-        <div class="col-md-12 text-end">
-            <select class="form-select" aria-label="Hacia la ubicacion" wire:model="location_from_id">
-                <option selected>Hacia la ubicacion</option>
-                @foreach ($locations as $location)
-                    <option value="{{ $location->id }}">{{ $location->name }}</option>
-                @endforeach
-              </select>
-        </div>
-        <div class="col-md-12 text-end">
-            <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_to_id">
-                <option selected>Desde la ubicacion</option>
-                @foreach ($locations as $location)
-                    <option value="{{ $location->id }}">{{ $location->name }}</option>
-                @endforeach
-              </select>
-        </div>
-        <div class="col-md-12 text-end">
-            <select class="form-select" aria-label="Tipo de movimiento" wire:model="movement_type_id">
-                <option selected>Tipo</option>
-                @foreach ($MovementTypes as $MovementType)
-                    <option value="{{ $MovementType->id }}">{{ $MovementType->name }}</option>
-                @endforeach
-              </select>
-        </div>
-        <!-- <div class="input-group date">
-            <input type="text" class="form-control" datepicker="true" wire:model="date_from"
-            onchange="this.dispatchEvent(new InputEvent('input'))">
-            <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
             </div>
         </div>
-        <div class="input-group date">
-            <input type="text" class="form-control" datepicker="true" wire:model="date_to" 
-            onchange="this.dispatchEvent(new InputEvent('input'))">
-            <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
-            </div>
-        </div> -->
-        <form>
-        @csrf 
-        <br>
-        <div class="container">
-            <div class="row">
-                <div class="container-fluid">
-                    <div class="form-group row">
+    </div>
+    <br>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
                         <label for="date" class="col-form-label col-sm-2">Desde: </label>
-                        <div class="col-sm-3">
-                            <input type="date" wire:model="date_from" class="form-control input-sm" id="from" name="from" >
-                        </div>
-                            <label for="date"class="col-form-lavel col-sm-2">Hasta: </label>
-                            <div class="col-sm-3">
-                                <input type="date" wire:model="date_to" class="form-control input-sm" id="to" name="to">
-                            </div>
+                        <input type="date" wire:model="date_from" class="form-control" id="from" name="from">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="date"class="col-form-label col-sm-2">Hasta: </label>
+                        <input type="date" wire:model="date_to" class="form-control" id="to" name="to">
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <br>
 
-
-        </form>
+    <div class="container">
         @if (session()->has('message'))
             <br>
             <div class="col-md-12">
@@ -88,11 +80,11 @@
                 <tbody>
 
                     @forelse ($movements as $movement)
-                       <tr>
+                        <tr>
                             <td>{{ $movement->id }}</td>
                             <td>{{ $movement->product->serial_number }}</td>
                             <td>{{ $movement->movementType->name }}</td>
-                            <td>{{ $movement->created_at }}</td>
+                            <td>{{ $movement->created_at->diffForHumans() }}</td>
                             <td>{{ $movement->locationFrom?->name }}</td>
                             <td>{{ $movement->locationTo?->name }}</td>
                         </tr>

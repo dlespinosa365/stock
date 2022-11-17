@@ -42,12 +42,12 @@
                                     class="btn btn-outline-primary"
                                     wire:click="edit({{ $product->id }})">Editar</button>
 
-                                <button type="button" data-bs-toggle="modal" data-bs-target="#moveProduct"
+                                <button type="button" data-bs-toggle="modal" data-bs-target="#prepareMoveToCustomer"
                                     class="btn btn-outline-primary"
-                                    wire:click="moveToCustomer({{ $product->id }})">Enviar a cliente</button>
+                                    wire:click="prepareMoveToCustomer({{ $product->id }})">Enviar a cliente</button>
 
                                 <button type="button" data-bs-toggle="modal" data-bs-target="#markAsOutProduct"
-                                    class="btn btn-outline-danger" wire:click="markAsOut({{ $product->id }})">Dar de
+                                    class="btn btn-outline-danger" wire:click="prepareMarkAsOut({{ $product->id }})">Dar de
                                     baja</button>
 
                             </td>

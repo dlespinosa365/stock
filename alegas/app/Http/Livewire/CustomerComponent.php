@@ -23,7 +23,7 @@ class CustomerComponent extends Component
 
     public function render()
     {
-        $customers = Customer::where('social_reason', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->with('location')->paginate(2);
+        $customers = Customer::where('social_reason', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->with('location')->paginate(10);
         return view('livewire.customer-list', [
                'customers' => $customers
             ])

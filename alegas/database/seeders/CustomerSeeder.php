@@ -4,11 +4,10 @@ namespace Database\Seeders;
 
 use DOMDocument;
 use App\Helpers\CustomHelper;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\Location;
+use App\Models\Customer;
 
 
 
@@ -22,13 +21,49 @@ class CustomerSeeder extends Seeder
     public function run()
     {
         $listLinks = $this->getUrlList();
-        dd($listLinks);
+        foreach ($listLinks as $link) {
+            $customerPageRequest = Http::get($link);
+            $customerPageAttributes = $this->parseHtmlFromCustomerPage($customerPageRequest->body());
+            $customerPageAttributes['source_url'] = $link;
+            if (in_array($customerPageAttributes['rut'], ['', '0']) && $customerPageAttributes['social_reason'] === '') {
+                continue;
+            }
+            $this->createACustomer($customerPageAttributes);
+        }
+    }
 
+    private function createACustomer($customerData)
+    {
+        $address = $customerData['address'];
+        if (!$this->isTheColumnName($customerData['zona'], 'especificado')) {
+            $address .= ', ' . $customerData['zona'];
+        }
+        if (!$this->isTheColumnName($customerData['departamento'], 'especificado')) {
+            $address .= ', ' . $customerData['departamento'];
+        }
+        $location = new Location();
+        $location->name = strtoupper($address);
+        $location->address = strtoupper($address);
+        $location->phone = $this->formatPhone($customerData['phone']);
+        $location->location_type = Location::$LOCATION_TYPE_CUSTOMER;
+        $location->save();
+
+        $customer = new Customer();
+        $customer->social_reason = strtoupper($customerData['social_reason']);
+        $customer->rut = $customerData['rut'];
+        $customer->email = $customerData['email'];
+        $customer->location_id = $location->id;
+        $customer->save();
+    }
+
+    private function formatPhone(string $phone)
+    {
+        $res = preg_replace("/[^0-9]/", '', $phone);
+        return $res;
     }
 
     private function getUrlList()
     {
-        $customersData = [];
         $responseFromGeneralList = Http::asForm()->post(
             'http://gpsenorbita.sytes.net/alegases/empresas/buscoemp2.php',
             [
@@ -38,60 +73,7 @@ class CustomerSeeder extends Seeder
             ]
         );
         $links = $this->parseHtmlFromGeneralListPage($responseFromGeneralList->body());
-        foreach ($links as $link) {
-            $customerPageRequest = Http::get($link);
-            $customerPageAttributes = $this->parseHtmlFromCustomerPage($customerPageRequest->body());
-            $customerPageAttributes['source_url'] = $link;
-            $customersData[] = $customerPageAttributes;
-        }
-        dd($customersData);
-        // hola benja en este array vas a tener
-        /**
-         * [
-         *   "externo" => "235"
-         *   "nombre" => "FERNANDEZ LUIS"
-         *   "social_reason" => "FERNANDEZ LUIS"
-         *   "address" => "AURELIA VIERA 3016"
-         *   "rut" => "0"
-         *   "phone" => "51 476.02."
-         *   "zona" => "no especificado"
-         *   "email" => ""
-         *   "departamento" => "no especificado"
-         *   "source_url" => "http://gpsenorbita.sytes.net/alegases/empresas/muestroemp.php?codigo=230"
-         *   ]
-         * un objeto asi, esa es toda la data que tenemos ahora debes usar eso para crear un customer en nuestra BD,
-         * recuerda que el customer tiene asociada una location, por tanto hay que crear la location primero, obtener el id y luego crear
-         * el customer con ese Id de location
-         * para crear la location recomiendo usar
-         * los modelos correspondientes de Location y Customer
-         * de esa forma puedes crear una nueva location $location = new Location(); luego llevarle todos los valores
-         * y despues hacer el $location->save() para que se guarde en la DB, una vez guardada podes acceder al $location->id que vas a usar
-         * para crear el customer.
-         * Buena suerte con el mismo principio haz el otro seeder de productos.
-         *
-         */
-        
-        $location = new Location();
-
-
-        $location->save();
-
-        DB::table('customers')->insert([
-            [
-            "externo" => $customersData->externo,
-            "nombre" => $customersData->nombre,
-            "social_reason" => $customersData->social_reason,
-            "location" => $location->id,
-            "address" => $customersData->address,
-            "rut" => $customersData->rut,
-            "phone" => $customersData->phone,
-            "zona" => $customersData->zona,
-            "email" => $customersData->email,
-            "departamento" => $customersData->departamento,
-            "source_url" => $customersData->source_url
-            ]
-        ]);
-        return $customersData;
+        return $links;
     }
 
     private function isTheColumnName(string $nameFromTd, string $nameToCompare)

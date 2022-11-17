@@ -2,12 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Location;
-use App\Models\ProductType;
-use App\Models\Product;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use DOMDocument;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 
 class ProductSeeder extends Seeder
@@ -16,96 +13,54 @@ class ProductSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
-     */ 
+     */
     public function run()
     {
-        $listLinks = $this->getUrlList();
-       
-    }
-    private function getUrlList()
-    {
-        $productData = [];
-        $responseFromGeneralList = Http::asForm()->post(
-            'http://gpsenorbita.sytes.net/alegases/productos/muestropro.php',
-            [
-                'buscar' => '',
-                'vcampo' => '1',
-                'enviar' => 'Buscar'
-            ]
-        );
-        $links = $this->parseHtmlFromGeneralListPage($responseFromGeneralList->body());
-        foreach ($links as $link) {
-            $customerPageRequest = Http::get($link);
-            $customerPageAttributes = $this->parseHtmlFromCustomerPage($customerPageRequest->body());
-            $customerPageAttributes['source_url'] = $link;
-            $productData[] = $customerPageAttributes;
+        $productLinksFromHtml = $this->getHtmlFromPage('http://gpsenorbita.sytes.net/alegases/productos/abmproductos.php');
+        $listLinksForProducts = $this->parseHtmlFromProductListPage($productLinksFromHtml);
+        foreach ($listLinksForProducts as $link) {
+            $htmlProductPage = $this->getHtmlFromPage($link);
+            $productData = $this->parseHtmlFromProductPage($htmlProductPage);
+            dd($productData);
         }
-        dd($productData);
-        
-        $location = new Location();
+    }
+    private function getHtmlFromPage($link)
+    {
+        $responseFromGeneralList = Http::get($link);
+        return $responseFromGeneralList->body();
+    }
 
+    private function createProduct($productData){
 
-        $location->save();
-
-        DB::table('products')->insert([
-            [
-            "id" => $productData->id,
-            "serial_number" => $productData->serial_number,
-            "product_type_id" => $productData->product_type_id,
-            "provider_id" => $productData->provider_id,
-            "current_location_id" => $productData->current_location_id,
-            ]
-        ]);
-        return $productData;
     }
 
 
-    private function isTheColumnName(string $nameFromTd, string $nameToCompare)
+    private function parseHtmlFromProductListPage(string $htmlResponseBody)
     {
-        $nameFromTd = strtoupper(trim($nameFromTd));
-        $nameToCompare = strtoupper($nameToCompare);
-        return str_contains($nameFromTd, $nameToCompare);
-    }
-
-    private function parseHtmlFromGeneralListPage($html)
-    {
-        $lastPos = 0;
-        $urls = [];
-        while (($lastPos = strpos($html, 'codigo=', $lastPos)) !== false) {
-            $initialNumber = $lastPos + 7;
-            $number = '';
-            while (in_array($html[$initialNumber], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])) {
-                $number .= $html[$initialNumber];
-                $initialNumber++;
-            }
-            $urls[] = 'http://gpsenorbita.sytes.net/alegases/productos/muestropro.php?codigo=' . $number;
-            $lastPos = $lastPos + strlen('codigo=');
-        }
-        return $urls;
-    }
-
-    private function parseHtmlFromCustomerPage(string $html)
-    {
-        $dom = new DomDocument();
-        @$dom->loadHTML($html);
+        $dom = new DOMDocument();
+        @$dom->loadHTML($htmlResponseBody);
         $child_elements = $dom->getElementsByTagName('td');
-        $customer = [];
+        $productLinks = [];
         foreach ($child_elements as $element) {
-            if ($element->getAttribute('class') === 'titulo') {
-                if ($this->isTheColumnName($element->nodeValue, 'serial_number')) {
-                    $customer['serial_number'] = CustomHelper::removeSpecialsChars($element->nextElementSibling->nodeValue);
-                }
-                if ($this->isTheColumnName($element->nodeValue, 'product_type_id')) {
-                    $customer['product_type_id'] = CustomHelper::removeSpecialsChars($element->nextElementSibling->nodeValue);
-                }
-                if ($this->isTheColumnName($element->nodeValue, 'provider_id')) {
-                    $customer['provider_id'] = CustomHelper::removeSpecialsChars($element->nextSibling->nodeValue);
-                }
-                if ($this->isTheColumnName($element->nodeValue, 'current_location_id')) {
-                    $customer['current_location_id'] = CustomHelper::removeSpecialsChars($element->nextSibling->nodeValue);
-                }
+            if ($element->getAttribute('class') === 'detalle' ) {
+                $productLinks[] = 'http://gpsenorbita.sytes.net/alegases/productos/'.$element->nextSibling->childNodes[1]->getAttribute('href');
             }
         }
-        return $customer;
+        return $productLinks;
+    }
+    private function parseHtmlFromProductPage(string $htmlResponseBody)
+    {
+        $dom = new DOMDocument();
+        @$dom->loadHTML($htmlResponseBody);
+        $child_elements = $dom->getElementsByTagName('td');
+        $product = [];
+        foreach ($child_elements as $element) {
+            if ($element->getAttribute('width') === '340' && $element->previousSibling->nodeValue === ' Código: ') {
+                $product[] = [
+                    'serial_number' => $element->nodeValue,
+                ];
+            }
+        }
+        return $product;
     }
 }

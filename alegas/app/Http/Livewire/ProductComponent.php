@@ -16,12 +16,11 @@ class ProductComponent extends CustomMasterComponent
     public $provider_id;
     public $product_type_id;
     public $location_id;
+    public $location_for_movement_id;
     public $product_id;
     public $serials = [];
 
-    public function mount() {
-        $this->location_id = Location::$LOCATION_INTERN_ID;
-    }
+    public $show_error_missing_serials;
 
     public function render()
     {
@@ -32,12 +31,17 @@ class ProductComponent extends CustomMasterComponent
         $productTypes = ProductType::all();
         $providers = Provider::all();
         $locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)->get();
+        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->get();
+        if (!$this->location_id) {
+            $this->location_id = $locations->get(0)->id;
+        }
 
         return view('livewire.product-list', [
             'products' => $products,
             'productTypes' => $productTypes,
             'providers' => $providers,
-            'locations' => $locations
+            'locations' => $locations,
+            'locations_customer' => $locations_customer
         ])
             ->layout('layouts.app',
                 [
@@ -63,6 +67,7 @@ class ProductComponent extends CustomMasterComponent
         $this->provider_id = '';
         $this->product_type_id = '';
         $this->location_id = Location::$LOCATION_INTERN_ID;
+        $this->show_error_missing_serials = false;
     }
 
     public function addSerialToList() {
@@ -79,6 +84,10 @@ class ProductComponent extends CustomMasterComponent
     {   //check data validation on store
         $validateData = $this->validate();
         $mensages = [];
+        if (count($this->serials) === 0) {
+            $this->show_error_missing_serials = true;
+            return;
+        }
         foreach ($this->serials as $serial) {
             $product = $this->checkIfProductIsOut($serial);
             if ($product && $product->is_out) {
@@ -105,13 +114,27 @@ class ProductComponent extends CustomMasterComponent
         $this->dispatchBrowserEvent('close-modal', ['id' => 'createProduct']);
     }
 
-    public function markAsOut(int $product_id) {
-        $product = Product::find($product_id);
+    public function markAsOut() {
+        $product = Product::find($this->product_id);
         $product->is_out = true;
         $product->save();
-        $this->sendSuccessMessageToSession('El producto ha sido creado.');
+        $this->createMovementForProductOut($product);
+        $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();
         $this->dispatchBrowserEvent('close-modal', ['id' => 'markAsOutProduct']);
+    }
+
+    public function createMovementForProductOut($product)
+    {
+        $movement = new Movement();
+        $movement->product_id = $product->id;
+        $movement->movement_type_id = MovementType::$BAJA;
+        $movement->location_from_id = $product->currentLocation->id;
+        $movement->save();
+    }
+
+    public function prepareMarkAsOut(int $product_id) {
+        $this->product_id = $product_id;
     }
 
     public function checkIfProductIsOut($serial)
@@ -154,6 +177,33 @@ class ProductComponent extends CustomMasterComponent
         $this->sendSuccessMessageToSession('Producto '. $validatedData['serial_number'] . ' actualizado.');
         $this->resetForm();
         $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProduct']);
+    }
+
+
+    public function prepareMoveToCustomer(int $product_id) {
+        $this->product_id = $product_id;
+    }
+
+    public function moveToCustomer() {
+        $product = Product::find($this->product_id);
+        $this->createMovementForOtherLocation($product);
+        $this->sendSuccessMessageToSession('Producto movido correctamente');
+        $this->resetForm();
+        $this->dispatchBrowserEvent('close-modal', ['id' => 'prepareMoveToCustomer']);
+    }
+
+    public function createMovementForOtherLocation($product)
+    {
+        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->get();
+        if (!$this->location_for_movement_id) {
+            $this->location_for_movement_id = $locations_customer->get(0)->id;
+        }
+        $movement = new Movement();
+        $movement->product_id = $product->id;
+        $movement->movement_type_id = MovementType::$SERVICIO;
+        $movement->location_from_id = $product->currentLocation?->id;
+        $movement->location_to_id = $this->location_for_movement_id;
+        $movement->save();
     }
 
 }

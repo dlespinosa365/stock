@@ -18,6 +18,9 @@
                         @error('serial_number')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
+                        @if($show_error_missing_serials)
+                            <span class="text-danger">No se ha agregado nigun numero de serie</span>
+                        @endif
                     </div>
                     <div class="mb-3">
                         @foreach ($serials as $serial)
@@ -146,6 +149,37 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <p>Estas seguro que desea dar de baja el producto?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" wire:click="resetForm"
+                        data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Si</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div wire:ignore.self class="modal fade" id="prepareMoveToCustomer" tabindex="-1" aria-labelledby="prepareMoveToCustomerLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="prepareMoveToCustomerLabel">Movimiento del producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" wire:click="resetForm"
+                    aria-label="Close"></button>
+            </div>
+            <form wire:submit.prevent="moveToCustomer">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="product_type_id" class="form-label">Nueva ubicacion</label>
+                        <select class="form-select" aria-label="Unicacion" wire:model="location_for_movement_id">
+                            @foreach ($locations_customer as $location)
+                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

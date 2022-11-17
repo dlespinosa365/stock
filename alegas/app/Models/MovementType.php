@@ -14,6 +14,7 @@ class MovementType extends Model
 
     public static $INGRESO = 1;
     public static $SERVICIO = 2;
-    public static $BAJA = 3;
+    public static $BAJA_CLIENTE = 3;
+    public static $BAJA_LOCAL = 4;
 
 }
