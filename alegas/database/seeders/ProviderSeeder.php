@@ -17,16 +17,12 @@ class ProviderSeeder extends Seeder
     public function run()
     {
         DB::table('providers')->insert([
-            'name' => 'ALUSA',
+            'name' => 'LINDE',
             'id' => 1
         ]);
         DB::table('providers')->insert([
-            'name' => 'CASA',
+            'name' => 'ALEGASES',
             'id' => 2
-        ]);
-        DB::table('providers')->insert([
-            'name' => 'NO ESPECIFICADO',
-            'id' => 3
         ]);
     }
 }

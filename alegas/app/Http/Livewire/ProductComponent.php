@@ -169,12 +169,12 @@ class ProductComponent extends CustomMasterComponent
 
     public function update() {
         $validatedData = $this->validate();
-        Product::where('id', $this->$this->product_id)->update([
-            'serial_number' => $validatedData['serial_number'],
+        Product::where('id', $this->product_id)->update([
+            'serial_number' => $this->serial_number,
             'product_type_id' => $validatedData['product_type_id'],
             'provider_id' => $validatedData['provider_id'],
         ]);
-        $this->sendSuccessMessageToSession('Producto '. $validatedData['serial_number'] . ' actualizado.');
+        $this->sendSuccessMessageToSession('Producto '. $this->serial_number . ' actualizado.');
         $this->resetForm();
         $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProduct']);
     }

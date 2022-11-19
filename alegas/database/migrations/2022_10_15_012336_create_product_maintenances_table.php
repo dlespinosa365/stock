@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->date('trigger_date');
             $table->boolean('is_sended');
+            $table->string('reason')->nullable();
 
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();

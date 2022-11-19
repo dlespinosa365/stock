@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessProductMaintenance;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->job(new ProcessProductMaintenance)
+            ->everyMinute()
+            ->emailOutputTo('dlespinosa365@gmail.com')
+            ->emailOutputOnFailure('dlespinosa365@gmail.com');
+        // $schedule->job(new ProcessProductMaintenance)->dailyAt('13:00');
     }
 
     /**

@@ -12,8 +12,6 @@ class ProductMaintenance extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['trigger_date', 'is_sended'];
-
     /**
      * The attributes that should be cast.
      *
@@ -46,5 +44,12 @@ class ProductMaintenance extends Model
             $productMaintenance->is_sended = false;
             $productMaintenance->trigger_date = Carbon::now()->addDays($daysToAdd)->toDateString();
         });
+    }
+
+    protected function scopeGetReadyToSend($query) {
+        return $query
+                ->with(['product', 'location'])
+                ->where('is_sended', false)
+                ->where('trigger_date', Carbon::now()->toDateString());
     }
 }
