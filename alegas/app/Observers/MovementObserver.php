@@ -22,11 +22,11 @@ class MovementObserver
         $product->current_location_id = $movement->location_to_id;
         $product->save();
 
-        if ($movement->movement_type_id === MovementType::$SERVICIO) {
+        if ($movement->movement_type_id === MovementType::$SERVICE) {
             $this->findAndRemoveProductMaintenance($movement);
             $this->createNewProductMaintenance($movement);
         }
-        if ($movement->movement_type_id === MovementType::$BAJA_CLIENTE) {
+        if ($movement->movement_type_id === MovementType::$CLIENT_OUT) {
             $this->findAndRemoveProductMaintenance($movement);
         }
     }
@@ -47,19 +47,5 @@ class MovementObserver
         ->whereDate('trigger_date', '>=', Carbon::now()->toDateString()) // cuando no se ha triguereado aun
         ->delete();
     }
-/**
-     * Handle the Movement "updated" event.
-     *
-     * @param  \App\Models\Movement  $movement
-     * @return void
-     */
-    public function updated(Movement $movement)
-    {
-        $product = Product::find($movement->product_id);
-        $product->current_location_id = $movement->location_to_id;
-        $product->save();
-    }
-
-
 
 }

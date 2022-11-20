@@ -32,5 +32,9 @@ class MovementTypeSeeder extends Seeder
             'name' => 'Baja de local',
             'id' => 4
         ]);
+        DB::table('movement_types')->insert([
+            'name' => 'Interno',
+            'id' => 5
+        ]);
     }
 }

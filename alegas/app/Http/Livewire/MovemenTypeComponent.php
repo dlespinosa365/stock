@@ -2,17 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Livewire\WithPagination;
 use App\Models\MovementType;
 
-class MovemenTypeComponent extends Component
+class MovemenTypeComponent extends CustomMasterComponent
 {
-
-
-    use WithPagination;
-
-    protected $paginationTheme = 'bootstrap';
 
     public $name;
     public $movementTypeId;
@@ -22,9 +15,10 @@ class MovemenTypeComponent extends Component
     {
         $movementTypes = MovementType::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(10);
         return view('livewire.movement-type-list', [
-               'movementTypes' => $movementTypes
-            ])
-            ->layout('layouts.app',
+            'movementTypes' => $movementTypes
+        ])
+            ->layout(
+                'layouts.app',
                 [
                     'header' => 'Listado de tipos de movimiento'
                 ]
@@ -33,6 +27,9 @@ class MovemenTypeComponent extends Component
     public function resetForm()
     {
         $this->name = '';
+        $this->closeModal('createMovementType');
+        $this->closeModal('updateMovementType');
+        $this->closeModal('deleteMovementType');
     }
     protected function rules()
     {
@@ -52,7 +49,6 @@ class MovemenTypeComponent extends Component
         session()->flash('message', 'Tipo de movimiento creado.');
         $this->resetForm();
 
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createMovementType']);
     }
     public function update()
     {
@@ -62,7 +58,7 @@ class MovemenTypeComponent extends Component
         ]);
         session()->flash('message', 'Tipo de movimiento actualizado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateMovementType']);
+
     }
     public function edit(int $id)
     {
@@ -70,8 +66,7 @@ class MovemenTypeComponent extends Component
         if ($movementType) {
             $this->movementTypeId = $movementType->id;
             $this->name = $movementType->name;
-        }
-        else {
+        } else {
             return redirect()->to('/tipo-de-movimiento');
         }
     }
@@ -84,6 +79,6 @@ class MovemenTypeComponent extends Component
     {
         MovementType::find($this->movementTypeId)->delete();
         session()->flash('message', 'Tipo de movimiento eliminado.');
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteMovementType']);
+
     }
 }

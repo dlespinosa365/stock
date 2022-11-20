@@ -6,12 +6,8 @@ use Livewire\WithPagination;
 use Livewire\Component;
 use App\Models\Customer;
 
-class CustomerComponent extends Component
+class CustomerComponent extends CustomMasterComponent
 {
-
-    use WithPagination;
-
-    protected $paginationTheme = 'bootstrap';
     public $idCustomer;
     public $social_reason;
     public $rut;
@@ -41,6 +37,9 @@ class CustomerComponent extends Component
         $this->social_reason = '';
         $this->address = '';
         $this->phone = '';
+        $this->closeModal('createCustomer');
+        $this->closeModal('updateCustomer');
+        $this->closeModal('deleteCustomer');
     }
 
     protected function rules()
@@ -78,7 +77,6 @@ class CustomerComponent extends Component
         $customer->save();
         session()->flash('message', 'Cliente creado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createCustomer']);
     }
 
     public function update()
@@ -100,7 +98,6 @@ class CustomerComponent extends Component
         $customer->save();
         session()->flash('message', 'Cliente actualizado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateCustomer']);
     }
 
     public function edit(int $id)
@@ -130,6 +127,6 @@ class CustomerComponent extends Component
         Location::find($customer->location_id)->delete();
         Customer::find($this->idCustomer)->delete();
         session()->flash('message', 'Cliente eliminado.');
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteCustomer']);
+        $this->closeModal('deleteCustomer');
     }
 }

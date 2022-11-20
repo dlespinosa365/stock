@@ -8,12 +8,8 @@ use Livewire\WithPagination; // para paginar
 
 
 
-class ProductTypeComponent extends Component
+class ProductTypeComponent extends CustomMasterComponent
 {
-    use WithPagination; // para paginar
-
-    protected $paginationTheme = 'bootstrap'; // theme
-
     public $name;
     public $productTypeId;
     public $search = '';
@@ -22,9 +18,10 @@ class ProductTypeComponent extends Component
     {
         $productTypes = ProductType::where('name', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->paginate(10);
         return view('livewire.product-type-list', [
-               'productTypes' => $productTypes
-            ])
-            ->layout('layouts.app',
+            'productTypes' => $productTypes
+        ])
+            ->layout(
+                'layouts.app',
                 [
                     'header' => 'Listado de tipos de producto'
                 ]
@@ -34,6 +31,9 @@ class ProductTypeComponent extends Component
     public function resetForm()
     {
         $this->name = '';
+        $this->closeModal('deleteProductType');
+        $this->closeModal('createProductType');
+        $this->closeModal('updateProductType');
     }
 
     protected function rules()
@@ -55,7 +55,6 @@ class ProductTypeComponent extends Component
         session()->flash('message', 'Tipo de producto creado.');
         $this->resetForm();
 
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createProductType']);
     }
 
     public function update()
@@ -66,7 +65,7 @@ class ProductTypeComponent extends Component
         ]);
         session()->flash('message', 'Tipo de producto actualizado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProductType']);
+
     }
 
     public function edit(int $id)
@@ -75,8 +74,7 @@ class ProductTypeComponent extends Component
         if ($productType) {
             $this->productTypeId = $productType->id;
             $this->name = $productType->name;
-        }
-        else {
+        } else {
             return redirect()->to('/tipo-de-producto');
         }
     }
@@ -90,6 +88,6 @@ class ProductTypeComponent extends Component
     {
         ProductType::find($this->productTypeId)->delete();
         session()->flash('message', 'Tipo de producto eliminado.');
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteProductType']);
+
     }
 }

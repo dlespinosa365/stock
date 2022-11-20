@@ -12,9 +12,10 @@ class MovementType extends Model
 
     protected $fillable = ['name'];
 
-    public static $INGRESO = 1;
-    public static $SERVICIO = 2;
-    public static $BAJA_CLIENTE = 3;
-    public static $BAJA_LOCAL = 4;
+    public static $INGRESS = 1;
+    public static $SERVICE = 2;
+    public static $CLIENT_OUT = 3;
+    public static $LOCAL_OUT = 4;
+    public static $INTERN = 4;
 
 }

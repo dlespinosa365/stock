@@ -6,17 +6,17 @@
     </x-slot>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @livewire('stock-component')
+                        @livewire('movement-list-component')
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-12 mt-4">
                 <div class="card">
                     <div class="card-body">
-                        @livewire('movement-per-product-component')
+                        @livewire('stock-component')
                     </div>
                 </div>
             </div>

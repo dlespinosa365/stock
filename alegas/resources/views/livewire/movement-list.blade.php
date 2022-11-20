@@ -1,67 +1,87 @@
 <div>
-    <div class="card">
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <input type="search" wire:model="serial_number" class="form-control mx-2"
-                            placeholder="Numero de serie" style="width: 230px" />
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" aria-label="Hacia la ubicacion" wire:model="location_from_id">
-                            <option selected>Hacia la ubicacion</option>
-                            @foreach ($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_to_id">
-                            <option selected>Desde la ubicacion</option>
-                            @foreach ($locations as $location)
-                                <option value="{{ $location->id }}">{{ $location->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-select" aria-label="Tipo de movimiento" wire:model="movement_type_id">
-                            <option selected>Tipo</option>
-                            @foreach ($MovementTypes as $MovementType)
-                                <option value="{{ $MovementType->id }}">{{ $MovementType->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+    @include('livewire.movement-new-form')
+    <div class="container mb-2">
+        <div class="row">
+            <div class="col-md-12 mb5">
+                <h3 class="h3 my-4">Movimientos</h3>
+            </div>
+            <div class="col-md-3">
+                <input type="search" wire:model="serial_number" class="form-control" placeholder="Numero de serie"
+                    style="width: 230px" />
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" aria-label="Tipo de movimiento" wire:model="movement_type_id">
+                    <option selected>Tipo</option>
+                    @foreach ($MovementTypes as $MovementType)
+                        <option value="{{ $MovementType->id }}">{{ $MovementType->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6 text-end">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse"
+                    data-bs-target="#moreFilters" aria-expanded="true" aria-controls="moreFilters" wire:click="toogleFilters">
+                    @if($filters_is_open)
+                        Ver menos filtros
+                    @else
+                        Ver mas filtros
+                    @endif
+                </button>
+                <button type="button" class="btn btn-outline-primary" wire:click="resetFiltersForm">
+                    Resetear Filtros
+                </button>
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                data-bs-target="#createMovement" aria-expanded="true">
+                    Nuevo Movimiento</button>
+            </div>
+        </div>
 
+    </div>
+    <div class="container accordion-collapse collapse pt-4 pb-4 shadow-sm rounded" id="moreFilters">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="location_from_id" class="col-form-label">Origen</label>
+                <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_from_id"
+                    id="location_from_id" name="location_from_id">
+                    <option selected>Desde la ubicacion</option>
+                    @foreach ($locations as $location)
+                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="location_to_id" class="col-form-label">Destino</label>
+                <select class="form-select" aria-label="Hasta ubicacion" wire:model="location_to_id" id="location_to_id"
+                    name="location_to_id">
+                    <option selected>Hasta ubicacion</option>
+                    @foreach ($locations as $location)
+                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="date" class="col-form-label">Desde</label>
+                <input type="date" wire:model="date_from" class="form-control" id="from" name="from">
+            </div>
+            <div class="col-md-3">
+                <label for="date"class="col-form-label">Hasta</label>
+                <input type="date" wire:model="date_to" class="form-control" id="to" name="to">
             </div>
         </div>
     </div>
-    <br>
-
-    <div class="card">
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="date" class="col-form-label col-sm-2">Desde: </label>
-                        <input type="date" wire:model="date_from" class="form-control" id="from" name="from">
-                    </div>
-                    <div class="col-md-3">
-                        <label for="date"class="col-form-label col-sm-2">Hasta: </label>
-                        <input type="date" wire:model="date_to" class="form-control" id="to" name="to">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-
-    <div class="container">
+    <div class="container mt-2">
         @if (session()->has('message'))
             <br>
             <div class="col-md-12">
                 <div class="alert alert-success" role="alert">
-                    {{ session('message') }}
+                    {!! session('message') !!}
+                </div>
+            </div>
+        @endif
+        @if (session()->has('error_message'))
+            <br>
+            <div class="col-md-12">
+                <div class="alert alert-danger" role="alert">
+                    {!! session('error_message') !!}
                 </div>
             </div>
         @endif

@@ -3,12 +3,8 @@
 namespace App\Http\Livewire;
 use App\Models\Location;
 
-use Livewire\Component;
-use Livewire\WithPagination;
-
-class LocationComponent extends Component
+class LocationComponent extends CustomMasterComponent
 {
-    use WithPagination;
     public $search = '';
     public $name;
     public $address;
@@ -39,6 +35,10 @@ class LocationComponent extends Component
         $this->address = '';
         $this->phone = '';
         $this->location_type = '';
+        $this->closeModal('createLocation');
+        $this->closeModal('updateLocation');
+        $this->closeModal('deleteLocation');
+
     }
     protected function rules()
     {
@@ -64,7 +64,6 @@ class LocationComponent extends Component
         $location->save();
         session()->flash('message', 'Unicacion creada.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createLocation']);
     }
     public function update()
     {
@@ -77,7 +76,6 @@ class LocationComponent extends Component
         ]);
         session()->flash('message', 'Localización actualizada.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateLocation']);
     }
     public function edit(int $id)
     {
@@ -101,6 +99,6 @@ class LocationComponent extends Component
     {
         Location::find($this->locationTypeId)->delete();
         session()->flash('message', 'Localización eliminada.');
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteLocation']);
+        $this->closeModal('deleteLocation');
     }
 }

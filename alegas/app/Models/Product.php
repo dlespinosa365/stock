@@ -43,6 +43,10 @@ class Product extends Model
         return $query->where('serial_number', 'like', '%' . $serial_number . '%');
     }
 
+    public function scopeWithSerialNumberStrict($query, $serial_number) {
+        return $query->where('serial_number', 'like', $serial_number);
+    }
+
     public function scopeIsOutFalse($query) {
         return $query->where('is_out', 0);
     }

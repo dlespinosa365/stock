@@ -68,6 +68,10 @@ class ProductComponent extends CustomMasterComponent
         $this->product_type_id = '';
         $this->location_id = Location::$LOCATION_INTERN_ID;
         $this->show_error_missing_serials = false;
+        $this->closeModal('createProduct');
+        $this->closeModal('markAsOutProduct');
+        $this->closeModal('updateProduct');
+        $this->closeModal('prepareMoveToCustomer');
     }
 
     public function addSerialToList() {
@@ -111,7 +115,7 @@ class ProductComponent extends CustomMasterComponent
         }
         $this->sendSuccessMessageToSession(join('<br>' , $mensages));
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createProduct']);
+
     }
 
     public function markAsOut() {
@@ -121,14 +125,13 @@ class ProductComponent extends CustomMasterComponent
         $this->createMovementForProductOut($product);
         $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'markAsOutProduct']);
+
     }
 
     public function createMovementForProductOut($product)
     {
         $movement = new Movement();
         $movement->product_id = $product->id;
-        $movement->movement_type_id = MovementType::$BAJA;
         $movement->location_from_id = $product->currentLocation->id;
         $movement->save();
     }
@@ -148,7 +151,6 @@ class ProductComponent extends CustomMasterComponent
     {
         $movement = new Movement();
         $movement->product_id = $product->id;
-        $movement->movement_type_id = MovementType::$INGRESO;
         $movement->location_to_id = $location_id;
         $movement->save();
     }
@@ -176,7 +178,7 @@ class ProductComponent extends CustomMasterComponent
         ]);
         $this->sendSuccessMessageToSession('Producto '. $this->serial_number . ' actualizado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProduct']);
+
     }
 
 
@@ -189,7 +191,7 @@ class ProductComponent extends CustomMasterComponent
         $this->createMovementForOtherLocation($product);
         $this->sendSuccessMessageToSession('Producto movido correctamente');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'prepareMoveToCustomer']);
+
     }
 
     public function createMovementForOtherLocation($product)
@@ -200,7 +202,6 @@ class ProductComponent extends CustomMasterComponent
         }
         $movement = new Movement();
         $movement->product_id = $product->id;
-        $movement->movement_type_id = MovementType::$SERVICIO;
         $movement->location_from_id = $product->currentLocation?->id;
         $movement->location_to_id = $this->location_for_movement_id;
         $movement->save();

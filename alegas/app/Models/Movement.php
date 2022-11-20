@@ -107,4 +107,42 @@ class Movement extends Model
         return $query->where('movement_type_id', $movement_type);
     }
 
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::creating(function ($movement) {
+            $location_to = Location::find($movement->location_to_id);
+            $location_from = Location::find($movement->location_from_id);
+
+            $isService = $location_to?->location_type === Location::$LOCATION_TYPE_CUSTOMER;
+
+            $isNew = !$location_from &&
+                            $location_to->location_type === Location::$LOCATION_TYPE_INTERN;
+            $isClientOut = !$location_to &&
+                                $location_from->location_type === Location::$LOCATION_TYPE_CUSTOMER;
+            $isLocalOut = !$location_to &&
+                            $location_from->location_type === Location::$LOCATION_TYPE_INTERN;
+            $isIntern = $location_to &&
+                        $location_from &&
+                        $location_from->location_type === Location::$LOCATION_TYPE_INTERN &&
+                        $location_to->location_type === Location::$LOCATION_TYPE_INTERN;
+
+
+            if ($isService) {
+                $movement->movement_type_id = MovementType::$SERVICE;
+            } elseif ($isNew) {
+                $movement->movement_type_id = MovementType::$INGRESS;
+            } elseif($isClientOut) {
+                $movement->movement_type_id = MovementType::$CLIENT_OUT;
+            } elseif($isLocalOut) {
+                $movement->movement_type_id = MovementType::$LOCAL_OUT;
+            } else {
+                $movement->movement_type_id = MovementType::$INTERN;
+            }
+        });
+    }
 }

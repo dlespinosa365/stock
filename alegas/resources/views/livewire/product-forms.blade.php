@@ -161,7 +161,7 @@
     </div>
 </div>
 
-
+<!-- sent to customer -->
 <div wire:ignore.self class="modal fade" id="prepareMoveToCustomer" tabindex="-1" aria-labelledby="prepareMoveToCustomerLabel"
     aria-hidden="true">
     <div class="modal-dialog">

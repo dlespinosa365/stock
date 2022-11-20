@@ -1,17 +1,10 @@
 <?php
 
 namespace App\Http\Livewire;
-use Livewire\WithPagination;
-use Livewire\Component;
 use App\Models\Provider;
 
-class ProviderComponent extends Component
+class ProviderComponent extends CustomMasterComponent
 {
-
-    use WithPagination;
-
-    protected $paginationTheme = 'bootstrap';
-
     public $name;
     public $description;
     public $phone;
@@ -36,6 +29,9 @@ class ProviderComponent extends Component
         $this->name = '';
         $this->description = '';
         $this->phone = '';
+        $this->closeModal('deleteProvider');
+        $this->closeModal('createProvider');
+        $this->closeModal('updateProvider');
     }
 
     protected function rules()
@@ -58,7 +54,6 @@ class ProviderComponent extends Component
         Provider::create($validatedData);
         session()->flash('message', 'Proveedor creado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'createProvider']);
     }
 
     public function update()
@@ -71,7 +66,6 @@ class ProviderComponent extends Component
         ]);
         session()->flash('message', 'Proveedor actualizado.');
         $this->resetForm();
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'updateProvider']);
     }
 
     public function edit(int $id)
@@ -97,6 +91,5 @@ class ProviderComponent extends Component
     {
         Provider::find($this->idProvider)->delete();
         session()->flash('message', 'Proveedor eliminado.');
-        $this->dispatchBrowserEvent('close-modal', ['id' => 'deleteProvider']);
     }
 }
