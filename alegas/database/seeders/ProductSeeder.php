@@ -39,8 +39,8 @@ class ProductSeeder extends Seeder
         $trs = $dom->getElementsByTagName('tr');
 
         for ($i = 2; $i < count($trs); $i++) {
-            $productSerial = strtoupper(trim($trs[$i]->childNodes[1]->nodeValue));
-            $productType = strtoupper(trim($trs[$i]->childNodes[2]->nodeValue));
+            $productSerial = strtoupper(trim($trs->item($i)->childNodes->item(1)->nodeValue));
+            $productType = strtoupper(trim($trs->item($i)->childNodes->item(2)->nodeValue));
             $this->productsData[$productSerial.''] = [
                 'serial' => $productSerial,
                 'type_name' => $productType,
@@ -81,13 +81,12 @@ class ProductSeeder extends Seeder
         @$dom->loadHTML($htmlListRequest->body());
         $tds = $dom->getElementsByTagName('td');
         for ($i=0; $i < count($tds) ; $i++) {
-            if($tds[$i]->getAttribute('class')=== 'detalle80'){
-                $finalTd = trim($tds[$i]->nodeValue);
+            if($tds->item($i)->getAttribute('class')=== 'detalle80'){
+                $finalTd = trim($tds->item($i)->nodeValue);
             }
         }
         $location = null;
         if(isset($finalTd)) {
-
             if($finalTd === 'cambio de ubicacion a ALEJANDRO'){
                 $location = 1;    //Id de ubicacion --> Local
             }
