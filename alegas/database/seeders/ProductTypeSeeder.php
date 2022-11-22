@@ -27,6 +27,7 @@ class ProductTypeSeeder extends Seeder
     {
         $productTypeData = [];
         $responseFromGeneralList = Http::get('http://gpsenorbita.sytes.net/alegases/productos/abmproductos.php');
+        //tipos de productos
         return $responseFromGeneralList->body();
     }
 

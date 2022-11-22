@@ -22,7 +22,29 @@ class LocationSeeder extends Seeder
             'address' => 'Barra',
             'phone' => '',
             'location_type' => Location::$LOCATION_TYPE_INTERN,
+            'id' => 4
+        ]);
+        DB::table('locations')->insert([
+            'name' => 'Local',
+            'address' => 'Local',
+            'phone' => '',
+            'location_type' => Location::$LOCATION_TYPE_INTERN,
             'id' => Location::$LOCATION_INTERN_ID
         ]);
+        DB::table('locations')->insert([
+            'name' => 'Camion Leonel',
+            'address' => 'Camion Leonel',
+            'phone' => '',
+            'location_type' => Location::$LOCATION_TYPE_TRUCK,
+            'id' => 2
+        ]);
+        DB::table('locations')->insert([
+            'name' => 'Camion German',
+            'address' => 'Camion German',
+            'phone' => '',
+            'location_type' => Location::$LOCATION_TYPE_TRUCK,
+            'id' => 3
+        ]);
+
     }
 }
