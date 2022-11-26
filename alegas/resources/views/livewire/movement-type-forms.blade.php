@@ -75,7 +75,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" wire:click="resetForm"
                         data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-outline-danger">Si</button>
+                    <button type="submit" class="btn btn-outline-success">Si</button>
                 </div>
             </form>
         </div>
