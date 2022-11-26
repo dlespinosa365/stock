@@ -46,9 +46,9 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"
                         wire:click="resetForm"> Cerrar</button>
-                    <button type="submit" class="btn btn-sucess close-modal">Guardar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
                 </div>
             </form>
         </div>
@@ -102,9 +102,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"
                         wire:click="resetForm"> Cerrar</button>
-                    <button type="submit" class="btn btn-sucess close-modal">Guardar</button>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
                 </div>
             </form>
         </div>
@@ -129,9 +129,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" wire:click="resetForm"
+                    <button type="button" class="btn btn-outline-primary" wire:click="resetForm"
                         data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Si</button>
+                    <button type="submit" class="btn btn-outline-danger">Si</button>
                 </div>
             </form>
         </div>

@@ -95,7 +95,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal" wire:click="closeModalshowThreeLastMovementFn"> Cerrar</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" wire:click="closeModalshowThreeLastMovementFn"> Cerrar</button>
                 </div>
             </div>
         </div>

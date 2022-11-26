@@ -37,9 +37,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"
                         wire:click="resetAddForm"> Cancelar</button>
-                    <button type="submit" class="btn btn-sucess close-modal">Crear</button>
+                    <button type="submit" class="btn btn-outline-success">Crear</button>
                 </div>
             </form>
         </div>
