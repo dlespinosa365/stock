@@ -8,7 +8,8 @@
                 <select class="form-select" aria-label="Ubicacion" wire:model="locationId">
                     <option value="" selected>Seleccione una ubicacion</option>
                     @foreach ($locations as $location)
-                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @if($location->name ) <option value="{{ $location->id }}">{{ $location->name}}</option> 
+                        @endif
                     @endforeach
                 </select>
             </div>

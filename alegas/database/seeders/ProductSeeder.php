@@ -99,6 +99,9 @@ class ProductSeeder extends Seeder
             if($finalTd === 'cambio de ubicacion a PERDIDOS -NO UBICADOS'){
                 $location = 1;
             }
+            if($finalTd === 'cambio de ubicacion a BARRA OFICINA'){
+                $location = 1;
+            }
             if(strpos($finalTd,'Ingreso')){
                 $location = 1;
             }
