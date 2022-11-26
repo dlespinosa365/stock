@@ -88,6 +88,6 @@ class ProductTypeComponent extends CustomMasterComponent
     {
         ProductType::find($this->productTypeId)->delete();
         session()->flash('message', 'Tipo de producto eliminado.');
-
+        $this->resetForm();
     }
 }

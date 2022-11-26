@@ -18,8 +18,7 @@
                 </select>
             </div>
             <div class="col-md-6 text-end">
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse"
-                    data-bs-target="#moreFilters" aria-expanded="true" aria-controls="moreFilters" wire:click="toogleFilters">
+                <button type="button" class="btn btn-outline-primary" wire:click="toogleFilters">
                     @if($filters_is_open)
                         Ver menos filtros
                     @else
@@ -36,38 +35,40 @@
         </div>
 
     </div>
-    <div class="container accordion-collapse collapse pt-4 pb-4 shadow-sm rounded" id="moreFilters">
-        <div class="row">
-            <div class="col-md-3">
-                <label for="location_from_id" class="col-form-label">Origen</label>
-                <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_from_id"
-                    id="location_from_id" name="location_from_id">
-                    <option selected>Desde la ubicacion</option>
-                    @foreach ($locations as $location)
-                        <option value="{{ $location->id }}">{{ $location->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="location_to_id" class="col-form-label">Destino</label>
-                <select class="form-select" aria-label="Hasta ubicacion" wire:model="location_to_id" id="location_to_id"
-                    name="location_to_id">
-                    <option selected>Hasta ubicacion</option>
-                    @foreach ($locations as $location)
-                        <option value="{{ $location->id }}">{{ $location->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="date" class="col-form-label">Desde</label>
-                <input type="date" wire:model="date_from" class="form-control" id="from" name="from">
-            </div>
-            <div class="col-md-3">
-                <label for="date"class="col-form-label">Hasta</label>
-                <input type="date" wire:model="date_to" class="form-control" id="to" name="to">
+    @if($filters_is_open)
+        <div class="container accordion-collapse pt-4 pb-4 shadow-sm rounded" id="moreFilters">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="location_from_id" class="col-form-label">Origen</label>
+                    <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_from_id"
+                        id="location_from_id" name="location_from_id">
+                        <option selected>Desde la ubicacion</option>
+                        @foreach ($locations as $location)
+                            <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="location_to_id" class="col-form-label">Destino</label>
+                    <select class="form-select" aria-label="Hasta ubicacion" wire:model="location_to_id" id="location_to_id"
+                        name="location_to_id">
+                        <option selected>Hasta ubicacion</option>
+                        @foreach ($locations as $location)
+                            <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="date" class="col-form-label">Desde</label>
+                    <input type="date" wire:model="date_from" class="form-control" id="from" name="from">
+                </div>
+                <div class="col-md-3">
+                    <label for="date"class="col-form-label">Hasta</label>
+                    <input type="date" wire:model="date_to" class="form-control" id="to" name="to">
+                </div>
             </div>
         </div>
-    </div>
+    @endif
     <div class="container mt-2">
         @if (session()->has('message'))
             <br>

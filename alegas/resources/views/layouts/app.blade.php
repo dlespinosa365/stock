@@ -18,6 +18,10 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css"
+        integrity="sha512-42kB9yDlYiCEfx2xVwq0q7hT4uf26FUgSIZBK8uiaEnTdShXjwr8Ip1V4xGJMg3mHkUt9nNuTDxunHF0/EgxLQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body class="font-sans antialiased bg-light">
@@ -44,7 +48,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
         integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"
+        integrity="sha512-bUg5gaqBVaXIJNuebamJ6uex//mjxPk8kljQTdM1SwkNrQD7pjS+PerntUSD+QRWPNJ0tq54/x4zRV8bLrLhZg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Custom script -->
     <script>
         window.addEventListener('close-modal', event => {
             $('#' + event.detail.id).modal('hide')
@@ -52,10 +60,41 @@
         window.addEventListener('log', event => {
             console.log(event.detail.title, event.detail.message)
         })
+        window.addEventListener('collapse-open', event => {
+            const bsCollapse = new bootstrap.Collapse(event.detail.id, {
+                show: true
+            })
+        })
+        window.addEventListener('collapse-close', event => {
+            const bsCollapse = new bootstrap.Collapse(event.detail.id, {
+                hide: true
+            })
+        })
+        window.addEventListener('collapse-toggle', event => {
+            const bsCollapse = new bootstrap.Collapse(event.detail.id, {
+                toggle: true
+            })
+            console.log('triggering collapse-toggle')
+        })
         $('input[datepicker="true"]').datepicker({
             format: 'dd/mm/yyyy',
             language: 'es'
         })
+
+        window.addEventListener('DOMContentLoaded', () => {
+            this.livewire.hook('message.sent', () => {
+                NProgress.start();
+                // window.dispatchEvent(
+                //     new CustomEvent('loading', { detail: { loading: true }})
+                // );
+            } )
+            this.livewire.hook('message.processed', (message, component) => {
+                NProgress.done();
+                // window.dispatchEvent(
+                //     new CustomEvent('loading', { detail: { loading: false }})
+                // );
+            })
+        });
     </script>
 </body>
 

@@ -38,10 +38,11 @@ class MovementObserver
     }
 
     public function findAndRemoveProductMaintenance(Movement $movement) {
+        // dd($movement);
         ProductMaintenance::
         where([
             'product_id' => $movement->product_id,
-            'location_id' => $movement->location_to_id,
+            'location_id' => $movement->location_from_id,
             'is_sended' => false
         ])
         ->whereDate('trigger_date', '>=', Carbon::now()->toDateString()) // cuando no se ha triguereado aun

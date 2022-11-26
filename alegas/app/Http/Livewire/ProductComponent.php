@@ -31,7 +31,7 @@ class ProductComponent extends CustomMasterComponent
         $productTypes = ProductType::all();
         $providers = Provider::all();
         $locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)->get();
-        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->get();
+        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->orderBy('name')->get();
         if (!$this->location_id) {
             $this->location_id = $locations->get(0)->id;
         }
@@ -196,7 +196,7 @@ class ProductComponent extends CustomMasterComponent
 
     public function createMovementForOtherLocation($product)
     {
-        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->get();
+        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->orderBy('name')->get();
         if (!$this->location_for_movement_id) {
             $this->location_for_movement_id = $locations_customer->get(0)->id;
         }

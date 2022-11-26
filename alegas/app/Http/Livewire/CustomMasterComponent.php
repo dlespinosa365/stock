@@ -38,5 +38,17 @@ class CustomMasterComponent extends Component
         $this->dispatchBrowserEvent('close-modal', ['id' => $modalId]);
     }
 
+    protected function openCollapsible($elementId) {
+        $this->dispatchBrowserEvent('collapse-open', ['id' => $elementId]);
+    }
+
+    protected function closeCollapsible($elementId) {
+        $this->dispatchBrowserEvent('collapse-close', ['id' => $elementId]);
+    }
+
+    protected function toggleCollapsible($elementId) {
+        $this->dispatchBrowserEvent('collapse-toggle', ['id' => $elementId]);
+    }
+
 
 }

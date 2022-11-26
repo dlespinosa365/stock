@@ -15,9 +15,9 @@ class StockComponent extends CustomMasterComponent
     public $productToFind = null;
     public function render()
     {
-        $locations = Location::all();
+        $locations = Location::orderBy('name')->get();
         $this->log('locationId', $this->locationId);
-        $products = Product::byCurrentLocation($this->locationId)
+        $products = Product::with('productType')->byCurrentLocation($this->locationId)
             ->withSerialNumber($this->serialNumber)
             ->IsOutFalse()
             ->orderBy('id', 'DESC')
@@ -35,5 +35,9 @@ class StockComponent extends CustomMasterComponent
             ->limit(3)
             ->get();
         ;
+    }
+
+    public function closeModalshowThreeLastMovementFn() {
+        $this->closeModal('showThreeLastMovement');
     }
 }

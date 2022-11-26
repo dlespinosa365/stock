@@ -26,7 +26,7 @@
                         @foreach ($serials as $serial)
                             <strong>
                                 <span class="badge bg-secondary"
-                                    wire:click="removeSerialFromList( {{ $serial }} )">{{ $serial }}</span>
+                                    wire:click="removeSerialFromList('{{ $serial }}')">{{ $serial }}</span>
                             </strong>
                         @endforeach
                     </div>

@@ -21,7 +21,8 @@
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
-                            <th>Serial</th>
+                            <th>Tipo</th>
+                            <th>Numero de serie</th>
                             <th>Ubicacion</th>
                             <th>Acciones</th>
                         </tr>
@@ -29,6 +30,7 @@
                     <tbody>
                         @forelse ($products as $product)
                             <tr>
+                                <td>{{ $product->productType?->name }}</td>
                                 <td>{{ $product->serial_number }}</td>
                                 <td>{{ $product->currentLocation?->name }}</td>
                                 <td>
@@ -41,7 +43,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3">No se encontraron resultados</td>
+                                <td colspan="4">No se encontraron resultados</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -60,7 +62,7 @@
                     <h5 class="modal-title" id="showThreeLastMovementLabel">Ultimos Movimientos del producto
                         {{ $productToFind?->serial_number }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true close-btn">×</span>
+                        <span aria-hidden="true close-btn" wire:click="closeModalshowThreeLastMovementFn">×</span>
                     </button>
                 </div>
 
@@ -92,7 +94,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"> Cerrar</button>
+                    <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal" wire:click="closeModalshowThreeLastMovementFn"> Cerrar</button>
                 </div>
             </div>
         </div>

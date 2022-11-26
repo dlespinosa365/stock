@@ -8,6 +8,7 @@ use App\Models\Movement;
 use App\Models\MovementType;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
 
 class MovementListComponent extends CustomMasterComponent
 {
@@ -18,7 +19,7 @@ class MovementListComponent extends CustomMasterComponent
     public $messages_to_add = [];
 
 
-    public $filters_is_open = false;
+    public $filters_is_open;
 
     public $serial_number_to_add;
 
@@ -36,23 +37,25 @@ class MovementListComponent extends CustomMasterComponent
     public function render()
     {
 
-        $locations = Location::orderBy('name', 'ASC')->get();
+        $locations = Location::orderBy('name')->get();
         $MovementTypes = MovementType::all();
         $serial_number = $this->serial_number;
+        $dateFrom = $this->date_from ? (new Carbon($this->date_from))->toDateString() : null;
+        $dateTo = $this->date_to ? (new Carbon($this->date_to))->toDateString(): null;
         $movements = Movement::
         with(['product', 'movementType', 'locationFrom', 'locationTo'])
             ->whereHas('product', function (Builder $query) use ($serial_number) {
                 $query->where('serial_number', 'like', '%' . $serial_number . '%');
             })
             ->movementType($this->movement_type_id)
-            ->dateFrom($this->date_from)
-            ->dateTo($this->date_to)
+            ->dateFrom($dateFrom)
+            ->dateTo($dateTo)
             ->fromLocation($this->location_from_id)
             ->toLocation($this->location_to_id)
             ->orderBy('id', 'DESC')
 
             ->paginate(10);
-
+        $this->log('$this->filters_is_open', $this->filters_is_open);
         return view('livewire.movement-list', [
             'movements' => $movements,
             'locations' => $locations,
@@ -67,6 +70,7 @@ class MovementListComponent extends CustomMasterComponent
         $this->date_to = '';
         $this->location_from_id = '';
         $this->location_to_id = '';
+        $this->filters_is_open = false;
     }
 
     public function addSerialToList() {

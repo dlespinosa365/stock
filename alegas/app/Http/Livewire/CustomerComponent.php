@@ -45,11 +45,11 @@ class CustomerComponent extends CustomMasterComponent
     protected function rules()
     {
         return [
-            'rut' => 'required|string|max:191',
-            'email' => 'required|email',
+            'rut' => 'required|string|max:191|unique:customers',
+            'email' => 'required|email|unique:customers',
             'social_reason' => 'nullable|string|max:191',
             'address' => 'required|max:191',
-            'phone' => 'numeric'
+            'phone' => 'nullable|numeric'
         ];
     }
 

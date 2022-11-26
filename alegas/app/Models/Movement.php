@@ -76,7 +76,7 @@ class Movement extends Model
         if (!$date) {
             return $query;
         }
-        return $query->where('created_at', '>=', $date);
+        return $query->whereDate('created_at', '>=', $date);
     }
     /**
      * Scope a query to only include users of a given type.
@@ -90,7 +90,7 @@ class Movement extends Model
         if (!$date) {
             return $query;
         }
-        return $query->where('created_at', '<=', $date);
+        return $query->whereDate('created_at', '<=', $date);
     }
     /**
      * Scope a query to only include users of a given type.
@@ -126,12 +126,6 @@ class Movement extends Model
                                 $location_from->location_type === Location::$LOCATION_TYPE_CUSTOMER;
             $isLocalOut = !$location_to &&
                             $location_from->location_type === Location::$LOCATION_TYPE_INTERN;
-            $isIntern = $location_to &&
-                        $location_from &&
-                        $location_from->location_type === Location::$LOCATION_TYPE_INTERN &&
-                        $location_to->location_type === Location::$LOCATION_TYPE_INTERN;
-
-
             if ($isService) {
                 $movement->movement_type_id = MovementType::$SERVICE;
             } elseif ($isNew) {
