@@ -35,6 +35,11 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="mb-3">
+                        <label for="description_to_add" class="form-label">Nueva Ubicacion</label>
+                        <label for="des" class="form-label">Example textarea</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary close-btn" data-dismiss="modal"
