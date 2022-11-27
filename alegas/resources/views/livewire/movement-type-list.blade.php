@@ -32,7 +32,7 @@
                             <td>{{ $movementType->id }}</td>
                             <td>{{ $movementType->name }}</td>
                             <td>
-                                @if ($movementType->id > 4)
+                                @if ($movementType->id > 5)
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#updateMovementType"
                                         class="btn btn-outline-primary"
                                         wire:click="edit({{ $movementType->id }})">Editar</button>

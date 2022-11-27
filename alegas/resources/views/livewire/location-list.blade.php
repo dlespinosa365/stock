@@ -44,12 +44,15 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($location->id !== 1)
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#updateLocation"
                                         class="btn btn-outline-primary"
                                         wire:click="edit({{ $location->id }})">Editar</button>
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#deleteLocation"
                                         class="btn btn-outline-danger"
                                         wire:click="delete({{ $location->id }})">Eliminar</button>
+                                @endif
+
                             </td>
                         </tr>
                     @empty
