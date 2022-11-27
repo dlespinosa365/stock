@@ -84,15 +84,9 @@
         window.addEventListener('DOMContentLoaded', () => {
             this.livewire.hook('message.sent', () => {
                 NProgress.start();
-                // window.dispatchEvent(
-                //     new CustomEvent('loading', { detail: { loading: true }})
-                // );
-            } )
+            })
             this.livewire.hook('message.processed', (message, component) => {
                 NProgress.done();
-                // window.dispatchEvent(
-                //     new CustomEvent('loading', { detail: { loading: false }})
-                // );
             })
         });
     </script>

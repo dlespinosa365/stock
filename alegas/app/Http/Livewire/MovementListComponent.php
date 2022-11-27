@@ -18,6 +18,8 @@ class MovementListComponent extends CustomMasterComponent
     public $erros_to_add = [];
     public $messages_to_add = [];
 
+    public $description_to_add = '';
+
 
     public $filters_is_open;
 
@@ -70,6 +72,7 @@ class MovementListComponent extends CustomMasterComponent
         $this->date_to = '';
         $this->location_from_id = '';
         $this->location_to_id = '';
+        $this->description_to_add = '';
         $this->filters_is_open = false;
     }
 
@@ -97,6 +100,7 @@ class MovementListComponent extends CustomMasterComponent
                 $movement->product_id = $product->id;
                 $movement->location_from_id = $product->currentLocation?->id;
                 $movement->location_to_id = $this->location_id_to_add ? $this->location_id_to_add : null;
+                $movement->description = $this->description_to_add;
                 $movement->save();
                 $mensages[] = 'Se movio correctamente el producto '. $serial .'.';
             } else {
