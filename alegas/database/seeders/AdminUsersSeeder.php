@@ -33,8 +33,8 @@ class AdminUsersSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'name' => 'Alejandro',
-            'email' => 'alejandro',
-            'password' => bcrypt('ventas@alegases.uy'),
+            'email' => 'alegases@montevideo.com.uy',
+            'password' => bcrypt('alejandro123'),
         ]);
     }
 }
