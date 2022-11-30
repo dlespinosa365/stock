@@ -2,9 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Movement;
-use App\Models\MovementType;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Provider;
@@ -28,10 +28,10 @@ class ProductComponent extends CustomMasterComponent
             ->where('is_out', false)
             ->orderBy('id', 'DESC')
             ->paginate(10);
-        $productTypes = ProductType::all();
-        $providers = Provider::all();
-        $locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)->get();
-        $locations_customer = Location::where('location_type', Location::$LOCATION_TYPE_CUSTOMER)->orderBy('name')->get();
+        $productTypes = ProductType::orderBy('name')->get();
+        $providers = Provider::orderBy('name')->get();;
+        $locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)->orderBy('name')->get();
+        $locations_customer = Customer::with('location')->orderBy('social_reason')->get();
         if (!$this->location_id) {
             $this->location_id = $locations->get(0)->id;
         }

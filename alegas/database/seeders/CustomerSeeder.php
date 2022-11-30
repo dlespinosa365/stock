@@ -41,15 +41,23 @@ class CustomerSeeder extends Seeder
         if (!$this->isTheColumnName($customerData['departamento'], 'especificado')) {
             $address .= ', ' . $customerData['departamento'];
         }
+        if (strtoupper($customerData['nombre'])) {
+            $name = strtoupper($customerData['nombre']);
+        } elseif  (strtoupper($customerData['social_reason'])) {
+            $name = strtoupper($customerData['social_reason']);
+        } else {
+            $name = $customerData['rut'];
+        }
+
         $location = new Location();
-        $location->name = strtoupper($address);
+        $location->name = $name;
         $location->address = strtoupper($address);
         $location->phone = $this->formatPhone($customerData['phone']);
         $location->location_type = Location::$LOCATION_TYPE_CUSTOMER;
         $location->save();
 
         $customer = new Customer();
-        $customer->social_reason = strtoupper($customerData['social_reason']);
+        $customer->social_reason = $name;
         $customer->rut = $customerData['rut'];
         $customer->email = $customerData['email'];
         $customer->location_id = $location->id;
@@ -85,19 +93,16 @@ class CustomerSeeder extends Seeder
 
     private function parseHtmlFromGeneralListPage($html)
     {
-        $lastPos = 0;
-        $urls = [];
-        while (($lastPos = strpos($html, 'codigo=', $lastPos)) !== false) {
-            $initialNumber = $lastPos + 7;
-            $number = '';
-            while (in_array($html[$initialNumber], ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'])) {
-                $number .= $html[$initialNumber];
-                $initialNumber++;
+        $dom = new DomDocument();
+        @$dom->loadHTML($html);
+        $child_elements = $dom->getElementsByTagName('td');
+        $links = [];
+        foreach ($child_elements as $element) {
+            if ($element->getAttribute('class') === 'detalle') {
+                $links[] = 'http://gpsenorbita.sytes.net/alegases/empresas/'. $element->childNodes->item(1)->getAttribute('href');
             }
-            $urls[] = 'http://gpsenorbita.sytes.net/alegases/empresas/muestroemp.php?codigo=' . $number;
-            $lastPos = $lastPos + strlen('codigo=');
         }
-        return $urls;
+        return $links;
     }
 
     private function parseHtmlFromCustomerPage(string $html)

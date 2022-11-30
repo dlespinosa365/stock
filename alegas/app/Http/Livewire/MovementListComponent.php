@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Movement;
 use App\Models\MovementType;
@@ -19,6 +20,7 @@ class MovementListComponent extends CustomMasterComponent
     public $messages_to_add = [];
 
     public $description_to_add = '';
+    public $date_to_add = '';
 
 
     public $filters_is_open;
@@ -38,8 +40,9 @@ class MovementListComponent extends CustomMasterComponent
 
     public function render()
     {
-
-        $locations = Location::orderBy('name')->get();
+        $intern_locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)
+        ->orWhere('location_type', Location::$LOCATION_TYPE_TRUCK)->get();
+        $customers = Customer::with('location')->orderBy('social_reason')->get();
         $MovementTypes = MovementType::all();
         $serial_number = $this->serial_number;
         $dateFrom = $this->date_from ? (new Carbon($this->date_from))->toDateString() : null;
@@ -60,7 +63,8 @@ class MovementListComponent extends CustomMasterComponent
         $this->log('$this->filters_is_open', $this->filters_is_open);
         return view('livewire.movement-list', [
             'movements' => $movements,
-            'locations' => $locations,
+            'customers' => $customers,
+            'intern_locations' =>$intern_locations,
             'MovementTypes' => $MovementTypes
         ]);
     }
@@ -72,7 +76,6 @@ class MovementListComponent extends CustomMasterComponent
         $this->date_to = '';
         $this->location_from_id = '';
         $this->location_to_id = '';
-        $this->description_to_add = '';
         $this->filters_is_open = false;
     }
 
@@ -101,6 +104,7 @@ class MovementListComponent extends CustomMasterComponent
                 $movement->location_from_id = $product->currentLocation?->id;
                 $movement->location_to_id = $this->location_id_to_add ? $this->location_id_to_add : null;
                 $movement->description = $this->description_to_add;
+                $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
                 $movement->save();
                 $mensages[] = 'Se movio correctamente el producto '. $serial .'.';
             } else {
@@ -120,6 +124,7 @@ class MovementListComponent extends CustomMasterComponent
         $this->serials = [];
         $this->show_error_missing_serials = false;
         $this->location_id_to_add = '';
+        $this->date_to_add = '';
         $this->closeModal('createMovement');
      }
 

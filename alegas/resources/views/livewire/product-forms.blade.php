@@ -12,16 +12,14 @@
             <form wire:submit.prevent="store" onkeydown="return event.key != 'Enter';">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="serial_number" class="form-label">Numero(s) de Serie</label>
+                        <label for="serial_number" class="form-label">Numero(s) de Serie.
                         <input type="text" class="form-control" id="serial_number" placeholder=""
                             wire:model="serial_number" wire:keydown.enter="addSerialToList">
                         @error('serial_number')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                         @if($show_error_missing_serials)
-                        <div class="alert alert-warning" role="alert">
-                            Presione ENTER para ingresar el numero de serie
-                        </div>
+                            <span class="text-danger">Presione ENTER para añadir el número de serie.</span>
                         @endif
                     </div>
                     <div class="mb-3">
@@ -178,8 +176,8 @@
                     <div class="mb-3">
                         <label for="product_type_id" class="form-label">Nueva ubicacion</label>
                         <select class="form-select" aria-label="Unicacion" wire:model="location_for_movement_id">
-                            @foreach ($locations_customer as $location)
-                                <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @foreach ($locations_customer as $customer)
+                                <option value="{{ $customer->location->id }}">{{ $customer->name }}</option>
                             @endforeach
                         </select>
                     </div>

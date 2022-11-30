@@ -3,7 +3,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createMovementLabel">Nuevo Producto</h5>
+                <h5 class="modal-title" id="createMovementLabel">Nuevo Movimiento</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="resetAddForm">
                     <span aria-hidden="true close-btn">×</span>
                 </button>
@@ -30,15 +30,21 @@
                         <label for="location_id_to_add" class="form-label">Nueva Ubicacion</label>
                         <select class="form-select" aria-label="Unicacion" wire:model="location_id_to_add">
                             <option value="">BAJA</option>
-                            @foreach ($locations as $location)
+                            @foreach ($intern_locations as $location)
                                 <option value="{{ $location->id }}">{{ $location->name }}</option>
+                            @endforeach
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->location->id }}">{{ $customer->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="description_to_add" class="form-label">Nueva Ubicacion</label>
-                        <label for="des" class="form-label">Example textarea</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <label for="date_to_add" class="form-label">Fecha</label>
+                        <input type="date" wire:model="date_to_add" class="form-control" id="date_to_add" name="date_to_add">
+                    </div>
+                    <div class="mb-3">
+                        <label for="description_to_add" class="form-label">Descripcion</label>
+                        <textarea class="form-control" id="description_to_add" rows="3" wire:model="description_to_add"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

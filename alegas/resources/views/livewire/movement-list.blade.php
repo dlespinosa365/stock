@@ -90,24 +90,24 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Producto</th>
                         <th>Tipo</th>
                         <th>Fecha</th>
                         <th>Desde</th>
                         <th>Hacia</th>
+                        <th>Notas</th>
                     </tr>
                 </thead>
                 <tbody>
 
                     @forelse ($movements as $movement)
                         <tr>
-                            <td>{{ $movement->id }}</td>
                             <td>{{ $movement->product->serial_number }}</td>
                             <td>{{ $movement->movementType->name }}</td>
                             <td>{{ $movement->created_at->diffForHumans() }}</td>
                             <td>{{ $movement->locationFrom?->name }}</td>
                             <td>{{ $movement->locationTo?->name }}</td>
+                            <td>{{ $movement->description }}</td>
                         </tr>
                     @empty
                         <tr>

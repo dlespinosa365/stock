@@ -7,9 +7,11 @@
             <div class="col-md-6">
                 <select class="form-select" aria-label="Ubicacion" wire:model="locationId">
                     <option value="" selected>Seleccione una ubicacion</option>
-                    @foreach ($locations as $location)
-                        @if($location->name ) <option value="{{ $location->id }}">{{ $location->name}}</option> 
-                        @endif
+                    @foreach ($intern_locations as $location)
+                        <option value="{{ $location->id }}">{{ $location->name }}</option>
+                    @endforeach
+                    @foreach ($customers as $customer)
+                        <option value="{{ $customer->location->id }}">{{ $customer->name}}</option>
                     @endforeach
                 </select>
             </div>

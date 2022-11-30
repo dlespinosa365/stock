@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Movement;
 use App\Models\Product;
@@ -15,7 +16,9 @@ class StockComponent extends CustomMasterComponent
     public $productToFind = null;
     public function render()
     {
-        $locations = Location::orderBy('name')->get();
+        $customers = Customer::with('location')->orderBy('social_reason')->get();
+        $intern_locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)
+                            ->orWhere('location_type', Location::$LOCATION_TYPE_TRUCK)->get();
         $this->log('locationId', $this->locationId);
         $products = Product::with('productType')->byCurrentLocation($this->locationId)
             ->withSerialNumber($this->serialNumber)
@@ -24,7 +27,8 @@ class StockComponent extends CustomMasterComponent
             ->paginate(10);
         return view('livewire.stock-list', [
                'products' => $products,
-               'locations' => $locations
+               'customers' => $customers,
+               'intern_locations' => $intern_locations
         ]);
     }
 
