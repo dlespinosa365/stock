@@ -55,6 +55,10 @@
                         @enderror
                     </div>
                     <div class="mb-3">
+                        <label for="date_to_add" class="form-label">Fecha</label>
+                        <input type="date" wire:model="date_to_add" class="form-control" id="date_to_add" name="date_to_add">
+                    </div>
+                    <div class="mb-3">
                         <label for="location_id" class="form-label">Ubicacion</label>
                         <select class="form-select" aria-label="Unicacion" wire:model="location_id">
                             @foreach ($locations as $location)
@@ -151,6 +155,10 @@
                         <p>Estas seguro que desea dar de baja el producto?</p>
                     </div>
                 </div>
+                <div class="mb-3">
+                        <label for="date_to_delete" class="form-label">Fecha</label>
+                        <input type="date" wire:model="date_to_delete" class="form-control" id="date_to_delete" name="date_to_delete">
+                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" wire:click="resetForm"
                         data-bs-dismiss="modal">Cerrar</button>

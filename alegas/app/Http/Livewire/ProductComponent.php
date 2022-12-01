@@ -8,6 +8,7 @@ use App\Models\Movement;
 use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\Provider;
+use Illuminate\Support\Carbon;
 
 class ProductComponent extends CustomMasterComponent
 {
@@ -19,6 +20,8 @@ class ProductComponent extends CustomMasterComponent
     public $location_for_movement_id;
     public $product_id;
     public $serials = [];
+    public $date_to_add = '';
+    public $date_to_delete = '';
 
     public $show_error_missing_serials;
 
@@ -66,6 +69,7 @@ class ProductComponent extends CustomMasterComponent
         $this->serials = [];
         $this->provider_id = '';
         $this->product_type_id = '';
+        // $this->date_to_add = '';
         $this->location_id = Location::$LOCATION_INTERN_ID;
         $this->show_error_missing_serials = false;
         $this->closeModal('createProduct');
@@ -98,6 +102,7 @@ class ProductComponent extends CustomMasterComponent
                 $product->is_out = false;
                 $product->product_type_id = $validateData['product_type_id'];
                 $product->provider_id = $validateData['provider_id'];
+                $product->created_at =$this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
                 $product->update();
                 array_push($mensages, 'El producto ' . $serial . ' ha sido ingresado nuevamente.');
             } else if ($product && !$product->is_out) {
@@ -105,10 +110,12 @@ class ProductComponent extends CustomMasterComponent
             } else {
                 $product = new Product();
                 $product->is_out = false;
+                $product->created_at =$this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
                 $product->product_type_id = $validateData['product_type_id'];
                 $product->serial_number = strtoupper($serial);
                 $product->provider_id = $validateData['provider_id'];
                 $product->save();
+                dd( $product);
                 array_push($mensages, 'El producto '  . $serial . ' ha sido creado.');
             }
             $this->createMovementForProductRegistration($product, $validateData['location_id']);
@@ -121,7 +128,9 @@ class ProductComponent extends CustomMasterComponent
     public function markAsOut() {
         $product = Product::find($this->product_id);
         $product->is_out = true;
+        $product->updated_at = $this->date_to_delete ?  Carbon::parse($this->date_to_delete)->toDateString() : Carbon::now()->toDateString();;
         $product->save();
+        dd($product->updated_at);
         $this->createMovementForProductOut($product);
         $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();
