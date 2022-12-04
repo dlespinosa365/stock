@@ -152,13 +152,13 @@
             <form wire:submit.prevent="markAsOut">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <p>Estas seguro que desea dar de baja el producto?</p>
-                    </div>
-                </div>
-                <div class="mb-3">
                         <label for="date_to_delete" class="form-label">Fecha</label>
                         <input type="date" wire:model="date_to_delete" class="form-control" id="date_to_delete" name="date_to_delete">
                     </div>
+                    <div class="mb-3">
+                        <p>Estas seguro que desea dar de baja el producto?</p>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" wire:click="resetForm"
                         data-bs-dismiss="modal">Cerrar</button>
@@ -185,9 +185,13 @@
                         <label for="product_type_id" class="form-label">Nueva ubicacion</label>
                         <select class="form-select" aria-label="Unicacion" wire:model="location_for_movement_id">
                             @foreach ($locations_customer as $customer)
-                                <option value="{{ $customer->location->id }}">{{ $customer->name }}</option>
+                                <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] - {{ $customer->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="date_to_add" class="form-label">Fecha</label>
+                        <input type="date" wire:model="date_to_add" class="form-control" id="date_to_add" name="date_to_add">
                     </div>
                 </div>
                 <div class="modal-footer">

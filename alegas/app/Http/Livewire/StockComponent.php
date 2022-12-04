@@ -16,7 +16,7 @@ class StockComponent extends CustomMasterComponent
     public $productToFind = null;
     public function render()
     {
-        $customers = Customer::with('location')->orderBy('social_reason')->get();
+        $customers = Customer::with('location')->orderBy('external_number')->get();
         $intern_locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)
                             ->orWhere('location_type', Location::$LOCATION_TYPE_TRUCK)->get();
         $this->log('locationId', $this->locationId);

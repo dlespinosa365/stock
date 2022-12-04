@@ -11,7 +11,7 @@
                         <option value="{{ $location->id }}">{{ $location->name }}</option>
                     @endforeach
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->location->id }}">{{ $customer->name}}</option>
+                        <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] - {{ $customer->name}}</option>
                     @endforeach
                 </select>
             </div>

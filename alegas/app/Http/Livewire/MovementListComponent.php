@@ -42,7 +42,7 @@ class MovementListComponent extends CustomMasterComponent
     {
         $intern_locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)
         ->orWhere('location_type', Location::$LOCATION_TYPE_TRUCK)->get();
-        $customers = Customer::with('location')->orderBy('social_reason')->get();
+        $customers = Customer::with('location')->orderBy('external_number')->get();
         $MovementTypes = MovementType::all();
         $serial_number = $this->serial_number;
         $dateFrom = $this->date_from ? (new Carbon($this->date_from))->toDateString() : null;

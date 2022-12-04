@@ -32,7 +32,7 @@
                 <tbody>
                     @forelse ($customers as $customer)
                         <tr>
-                            <td>{{ $customer->id }}</td>
+                            <td>{{ $customer->external_number }}</td>
                             <td>{{ $customer->rut }}</td>
                             <td>{{ $customer->email }}</td>
                             <td>{{ $customer->social_reason }}</td>

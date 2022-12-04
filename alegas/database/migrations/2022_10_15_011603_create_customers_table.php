@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('social_reason');
             $table->string('rut');
             $table->string('email')->nullable();
+            $table->integer('external_number')->nullable();
 
             $table->unsignedBigInteger('location_id')->nullable();
             $table->foreign('location_id')->references('id')->on('locations')->nullOnDelete();

@@ -61,6 +61,7 @@ class CustomerSeeder extends Seeder
         $customer->rut = $customerData['rut'];
         $customer->email = $customerData['email'];
         $customer->location_id = $location->id;
+        $customer->external_number = $customerData['externo'];
         $customer->save();
     }
 

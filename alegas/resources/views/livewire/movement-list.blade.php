@@ -104,7 +104,7 @@
                         <tr>
                             <td>{{ $movement->product->serial_number }}</td>
                             <td>{{ $movement->movementType->name }}</td>
-                            <td>{{ $movement->created_at->diffForHumans() }}</td>
+                            <td>{{ $movement->created_at->toFormattedDateString() }}</td>
                             <td>{{ $movement->locationFrom?->name }}</td>
                             <td>{{ $movement->locationTo?->name }}</td>
                             <td>{{ $movement->description }}</td>

@@ -19,7 +19,9 @@ class CustomerComponent extends CustomMasterComponent
 
     public function render()
     {
-        $customers = Customer::where('social_reason', 'like', '%' . $this->search . '%')->orderBy('id', 'DESC')->with('location')->paginate(10);
+        $customers = Customer::where('social_reason', 'like', '%' . $this->search . '%')
+                            ->orWhere('external_number', 'like', '%' . $this->search . '%')
+                            ->orderBy('id', 'DESC')->with('location')->paginate(10);
         return view('livewire.customer-list', [
                'customers' => $customers
             ])

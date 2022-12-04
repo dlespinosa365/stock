@@ -34,7 +34,7 @@ class ProductComponent extends CustomMasterComponent
         $productTypes = ProductType::orderBy('name')->get();
         $providers = Provider::orderBy('name')->get();;
         $locations = Location::where('location_type', Location::$LOCATION_TYPE_INTERN)->orderBy('name')->get();
-        $locations_customer = Customer::with('location')->orderBy('social_reason')->get();
+        $locations_customer = Customer::with('location')->orderBy('external_number')->get();
         if (!$this->location_id) {
             $this->location_id = $locations->get(0)->id;
         }
@@ -69,7 +69,8 @@ class ProductComponent extends CustomMasterComponent
         $this->serials = [];
         $this->provider_id = '';
         $this->product_type_id = '';
-        // $this->date_to_add = '';
+        $this->date_to_add = '';
+        $this->date_to_delete = '';
         $this->location_id = Location::$LOCATION_INTERN_ID;
         $this->show_error_missing_serials = false;
         $this->closeModal('createProduct');
@@ -115,7 +116,6 @@ class ProductComponent extends CustomMasterComponent
                 $product->serial_number = strtoupper($serial);
                 $product->provider_id = $validateData['provider_id'];
                 $product->save();
-                dd( $product);
                 array_push($mensages, 'El producto '  . $serial . ' ha sido creado.');
             }
             $this->createMovementForProductRegistration($product, $validateData['location_id']);
@@ -128,9 +128,7 @@ class ProductComponent extends CustomMasterComponent
     public function markAsOut() {
         $product = Product::find($this->product_id);
         $product->is_out = true;
-        $product->updated_at = $this->date_to_delete ?  Carbon::parse($this->date_to_delete)->toDateString() : Carbon::now()->toDateString();;
         $product->save();
-        dd($product->updated_at);
         $this->createMovementForProductOut($product);
         $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();
@@ -142,6 +140,7 @@ class ProductComponent extends CustomMasterComponent
         $movement = new Movement();
         $movement->product_id = $product->id;
         $movement->location_from_id = $product->currentLocation->id;
+        $movement->created_at = $this->date_to_delete ?  Carbon::parse($this->date_to_delete)->toDateString() : Carbon::now()->toDateString();
         $movement->save();
     }
 
@@ -161,6 +160,7 @@ class ProductComponent extends CustomMasterComponent
         $movement = new Movement();
         $movement->product_id = $product->id;
         $movement->location_to_id = $location_id;
+        $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
         $movement->save();
     }
 
@@ -213,6 +213,7 @@ class ProductComponent extends CustomMasterComponent
         $movement->product_id = $product->id;
         $movement->location_from_id = $product->currentLocation?->id;
         $movement->location_to_id = $this->location_for_movement_id;
+        $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
         $movement->save();
     }
 
