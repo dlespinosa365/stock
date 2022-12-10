@@ -4,19 +4,23 @@
             <div class="col-md-12 mb5">
                 <h3 class="h3 my-4">Consulta de stock de producto</h3>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <select class="form-select" aria-label="Ubicacion" wire:model="locationId">
                     <option value="" selected>Seleccione una ubicacion</option>
                     @foreach ($intern_locations as $location)
                         <option value="{{ $location->id }}">{{ $location->name }}</option>
                     @endforeach
                     @foreach ($customers as $customer)
-                        <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] - {{ $customer->name}}</option>
+                        <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] -
+                            {{ $customer->name }}</option>
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <input type="search" wire:model="serialNumber" class="form-control" placeholder="Numero de serie" />
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-outline-success" wire:click="print">Imprimir</button>
             </div>
         </div>
         <div class="row">
@@ -97,9 +101,12 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" wire:click="closeModalshowThreeLastMovementFn"> Cerrar</button>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal"
+                        wire:click="closeModalshowThreeLastMovementFn"> Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>

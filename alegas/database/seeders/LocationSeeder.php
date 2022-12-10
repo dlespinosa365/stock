@@ -45,6 +45,13 @@ class LocationSeeder extends Seeder
             'location_type' => Location::$LOCATION_TYPE_TRUCK,
             'id' => 3
         ]);
+        DB::table('locations')->insert([
+            'name' => 'Perdidos',
+            'address' => 'Perdidos',
+            'phone' => '',
+            'location_type' => Location::$LOCATION_TYPE_INTERN,
+            'id' => 5
+        ]);
 
     }
 }

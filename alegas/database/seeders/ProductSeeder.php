@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Product;
 use App\Models\ProductType;
@@ -14,6 +15,7 @@ class ProductSeeder extends Seeder
 {
 
     private $productsData = [];
+    private $productsDataByCustomers = [];
     /**
      * Run the database seeds.
      *
@@ -24,7 +26,7 @@ class ProductSeeder extends Seeder
         $postUrl = 'http://gpsenorbita.sytes.net/alegases/stock/veoinventario.php';
         $ids = ['11', '5', '7', '8', '10'];
         foreach ($ids as $id) {
-            $htmlListRequest = Http::asForm()->timeout(3)->post($postUrl, [
+            $htmlListRequest = Http::asForm()->post($postUrl, [
                 'enviar' => 'buscar',
                 'vubi' => $id
             ]);
@@ -49,9 +51,7 @@ class ProductSeeder extends Seeder
             ];
             $this->createProduct($this->productsData[$productSerial.'']);
         }
-
     }
-
 
     private function createProduct($productData)
     {
@@ -74,7 +74,7 @@ class ProductSeeder extends Seeder
 
     private function resolveProductCurrentLocation($serial) {
         $urlCurrent = 'http://gpsenorbita.sytes.net/alegases/stock/veoincidentes.php';
-        $htmlListRequest = Http::asForm()->timeout(3)->post($urlCurrent, [
+        $htmlListRequest = Http::asForm()->post($urlCurrent, [
                 'vserie' => $serial
         ]);
         $dom = new DOMDocument();
@@ -88,7 +88,7 @@ class ProductSeeder extends Seeder
         $location = null;
         if(isset($finalTd)) {
             if($finalTd === 'cambio de ubicacion a ALEJANDRO'){
-                $location = 1;    //Id de ubicacion --> Local
+                $location = 5;    //perdidos
             }
             if($finalTd === 'cambio de ubicacion a RICHARD'){
                 $location = 1;
@@ -97,7 +97,7 @@ class ProductSeeder extends Seeder
                 $location = 3;
             }
             if($finalTd === 'cambio de ubicacion a PERDIDOS -NO UBICADOS'){
-                $location = 1;
+                $location = 4;
             }
             if($finalTd === 'cambio de ubicacion a BARRA OFICINA'){
                 $location = 1;
@@ -115,6 +115,29 @@ class ProductSeeder extends Seeder
 
     private function returnLocationByName($name){
         return Location::where('name', 'like', $name)->first()?->id;
+    }
+
+    private function parseCustomerPageHtml($html)
+    {
+        $dom = new DOMDocument();
+        @$dom->loadHTML($html);
+        $trs = $dom->getElementsByTagName('tr');
+        $products = [];
+        for ($i=0; $i < count($trs) ; $i++) {
+            $tdSerial = $trs->item($i)->childNodes->item(6);
+            $tdProductType = $trs->item($i)->childNodes->item(1);
+            if ($tdSerial && $tdProductType) {
+                if ($tdSerial->getAttribute('class')=== 'largo8' && $tdProductType->getAttribute('class')=== 'texto') {
+                    $serial = $tdSerial->nodeValue;
+                    $productType = $tdProductType->nodeValue;
+                    $products[] = [
+                        'serial' => $serial,
+                        'productType' => $productType,
+                    ];
+               }
+            }
+        }
+        return $products;
     }
 
 }

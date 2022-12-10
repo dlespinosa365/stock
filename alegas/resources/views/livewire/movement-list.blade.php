@@ -19,7 +19,7 @@
             </div>
             <div class="col-md-6 text-end">
                 <button type="button" class="btn btn-outline-primary" wire:click="toogleFilters">
-                    @if($filters_is_open)
+                    @if ($filters_is_open)
                         Ver menos filtros
                     @else
                         Ver mas filtros
@@ -29,13 +29,13 @@
                     Resetear Filtros
                 </button>
                 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                data-bs-target="#createMovement" aria-expanded="true">
+                    data-bs-target="#createMovement" aria-expanded="true">
                     Nuevo Movimiento</button>
             </div>
         </div>
 
     </div>
-    @if($filters_is_open)
+    @if ($filters_is_open)
         <div class="container accordion-collapse pt-4 pb-4 shadow-sm rounded" id="moreFilters">
             <div class="row">
                 <div class="col-md-3">
@@ -43,18 +43,26 @@
                     <select class="form-select" aria-label="Desde la ubicacion" wire:model="location_from_id"
                         id="location_from_id" name="location_from_id">
                         <option selected>Desde la ubicacion</option>
-                        @foreach ($locations as $location)
+                        @foreach ($intern_locations as $location)
                             <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                        @foreach ($customers as $customer)
+                            <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] -
+                                {{ $customer->name }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3">
                     <label for="location_to_id" class="col-form-label">Destino</label>
-                    <select class="form-select" aria-label="Hasta ubicacion" wire:model="location_to_id" id="location_to_id"
-                        name="location_to_id">
+                    <select class="form-select" aria-label="Hasta ubicacion" wire:model="location_to_id"
+                        id="location_to_id" name="location_to_id">
                         <option selected>Hasta ubicacion</option>
-                        @foreach ($locations as $location)
+                        @foreach ($intern_locations as $location)
                             <option value="{{ $location->id }}">{{ $location->name }}</option>
+                        @endforeach
+                        @foreach ($customers as $customer)
+                            <option value="{{ $customer->location->id }}">[{{ $customer->external_number }}] -
+                                {{ $customer->name }}</option>
                         @endforeach
                     </select>
                 </div>

@@ -6,6 +6,11 @@ namespace App\Helpers;
 class CustomHelper
 {
 
+    static public function domElementString($domElement)
+    {
+        return $domElement->ownerDocument->saveXML($domElement);
+    }
+
     static public function removeSpecialsChars(string $text)
     {
         $res = str_replace(array("\n", "\r", "\t", "\v", "\x00"), ' ', $text);

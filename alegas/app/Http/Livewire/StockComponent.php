@@ -44,4 +44,12 @@ class StockComponent extends CustomMasterComponent
     public function closeModalshowThreeLastMovementFn() {
         $this->closeModal('showThreeLastMovement');
     }
+
+    public function print()
+    {
+        if ($this->locationId) {
+            return redirect()->to('/imprimir-stock-por-ubicacion/'. $this->locationId);
+        }
+        $this->sendErrorMessageToSession('Debe seleccionar una ubicacion para imprimir');
+    }
 }

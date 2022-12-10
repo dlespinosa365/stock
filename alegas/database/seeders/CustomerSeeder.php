@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
+use App\Models\ProductType;
 use DOMDocument;
 use App\Helpers\CustomHelper;
 use Illuminate\Database\Seeder;
@@ -63,6 +65,23 @@ class CustomerSeeder extends Seeder
         $customer->location_id = $location->id;
         $customer->external_number = $customerData['externo'];
         $customer->save();
+
+        foreach ($customerData['products'] as $p) {
+            $product = new Product();
+            $product->serial_number = $p['serial'];
+            $product->is_out = false;
+            $product->current_location_id = $location->id;
+            $product->product_type_id = $this->resolveProductTypeId($p['productType']);
+            $product->save();
+        }
+    }
+
+    private function resolveProductTypeId($productTypeName) {
+        if (!$productTypeName) {
+            return null;
+        }
+        $productType = ProductType::where('name', 'like', '%'.$productTypeName. '%')->first();
+        return $productType;
     }
 
     private function formatPhone(string $phone)
@@ -100,7 +119,7 @@ class CustomerSeeder extends Seeder
         $links = [];
         foreach ($child_elements as $element) {
             if ($element->getAttribute('class') === 'detalle') {
-                $links[] = 'http://gpsenorbita.sytes.net/alegases/empresas/'. $element->childNodes->item(1)->getAttribute('href');
+                $links[] = 'http://gpsenorbita.sytes.net/alegases/empresas/'. $element->childNodes->item(1)->getAttribute('href'). '&opcion=3';
             }
         }
         return $links;
@@ -110,9 +129,9 @@ class CustomerSeeder extends Seeder
     {
         $dom = new DomDocument();
         @$dom->loadHTML($html);
-        $child_elements = $dom->getElementsByTagName('td');
+        $tds = $dom->getElementsByTagName('td');
         $customer = [];
-        foreach ($child_elements as $element) {
+        foreach ($tds as $element) {
             if ($element->getAttribute('class') === 'titulo') {
                 if ($this->isTheColumnName($element->nodeValue, 'externo')) {
                     $customer['externo'] = CustomHelper::removeSpecialsChars($element->nextElementSibling->nodeValue);
@@ -143,6 +162,18 @@ class CustomerSeeder extends Seeder
                 }
             }
         }
+        $table = $dom->getElementsByTagName('table')->item(1);
+            $trs = $table->getElementsByTagName('tr');
+            $products = [];
+            if (count($trs) > 1) {
+                for ($i=1; $i < count($trs); $i++) {
+                    $products[] = [
+                        'productType' => trim($trs->item($i)->childNodes->item(1)->nodeValue),
+                        'serial' => trim($trs->item($i)->childNodes->item(5)->nodeValue)
+                    ];
+                }
+            }
+        $customer['products'] = $products;
         return $customer;
     }
 }

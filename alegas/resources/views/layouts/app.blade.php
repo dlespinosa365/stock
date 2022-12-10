@@ -89,6 +89,7 @@
                 NProgress.done();
             })
         });
+
     </script>
 </body>
 
