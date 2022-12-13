@@ -1,4 +1,5 @@
-<div data-printable="true" id="print-stock-component-list">
+<div>
+        <h5>Stock para ubicacion: {{ $location->name }}</h5>
         <table class="table">
             <thead>
                 <tr>
