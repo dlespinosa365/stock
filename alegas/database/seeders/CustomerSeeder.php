@@ -81,7 +81,7 @@ class CustomerSeeder extends Seeder
             return null;
         }
         $productType = ProductType::where('name', 'like', '%'.$productTypeName. '%')->first();
-        return $productType;
+        return $productType?->id;
     }
 
     private function formatPhone(string $phone)

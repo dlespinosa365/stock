@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Customer;
+use App\Models\Location;
 use App\Models\Product;
 use Illuminate\Support\Carbon;
 use Livewire\Component;
@@ -20,10 +21,7 @@ class PrintStockByLocationComponent extends CustomMasterComponent
     public function render()
     {
         $date = Carbon::now()->toDateString();
-        $location = Customer::find($this->idLocation);
-        if (!$location) {
-            $location = Location::find($this->idLocation);
-        }
+        $location = Location::find($this->idLocation);
         $products = Product::with('productType')->byCurrentLocation($this->idLocation)
             ->IsOutFalse()
             ->orderBy('serial_number')

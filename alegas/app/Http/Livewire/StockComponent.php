@@ -10,8 +10,8 @@ use Livewire\Component;
 
 class StockComponent extends CustomMasterComponent
 {
-    public $locationId = null;
-    public $serialNumber = '';
+    public $locationId;
+    public $serialNumber;
     public $lastMovements = [];
     public $productToFind = null;
     public function render()
@@ -49,6 +49,7 @@ class StockComponent extends CustomMasterComponent
     {
         if ($this->locationId) {
             return redirect()->to('/imprimir-stock-por-ubicacion/'. $this->locationId);
+            $this->locationId = null;
         }
         $this->sendErrorMessageToSession('Debe seleccionar una ubicacion para imprimir');
     }

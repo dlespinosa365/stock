@@ -18,13 +18,6 @@ class LocationSeeder extends Seeder
     public function run()
     {
         DB::table('locations')->insert([
-            'name' => 'Barra',
-            'address' => 'Barra',
-            'phone' => '',
-            'location_type' => Location::$LOCATION_TYPE_INTERN,
-            'id' => 4
-        ]);
-        DB::table('locations')->insert([
             'name' => 'Local',
             'address' => 'Local',
             'phone' => '',
@@ -44,6 +37,13 @@ class LocationSeeder extends Seeder
             'phone' => '',
             'location_type' => Location::$LOCATION_TYPE_TRUCK,
             'id' => 3
+        ]);
+        DB::table('locations')->insert([
+            'name' => 'Barra',
+            'address' => 'Barra',
+            'phone' => '',
+            'location_type' => Location::$LOCATION_TYPE_INTERN,
+            'id' => 4
         ]);
         DB::table('locations')->insert([
             'name' => 'Perdidos',
