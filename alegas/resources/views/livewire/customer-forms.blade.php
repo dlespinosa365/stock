@@ -13,6 +13,11 @@
             <form wire:submit.prevent="store">
                 <div class="modal-body">
                     <div class="mb-3">
+                        <label for="rut" class="form-label">Numero</label>
+                        <input type="text" class="form-control" id="rut" placeholder="" wire:model="external_number">
+                        @error('external_number') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
+                    <div class="mb-3">
                         <label for="rut" class="form-label">RUT</label>
                         <input type="text" class="form-control" id="rut" placeholder="" wire:model="rut">
                         @error('rut') <span class="text-danger">{{ $message }}</span> @enderror
@@ -60,6 +65,11 @@
             </div>
             <form wire:submit.prevent="update">
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rut" class="form-label">Numero</label>
+                        <input type="text" class="form-control" id="rut" placeholder="" wire:model="external_number">
+                        @error('external_number') <span class="text-danger">{{ $message }}</span> @enderror
+                    </div>
                     <div class="mb-3">
                         <label for="rut" class="form-label">RUT</label>
                         <input type="text" class="form-control" id="rut" placeholder="" wire:model="rut">

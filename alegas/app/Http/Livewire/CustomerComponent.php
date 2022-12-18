@@ -11,6 +11,7 @@ class CustomerComponent extends CustomMasterComponent
     public $idCustomer;
     public $social_reason;
     public $rut;
+    public $external_number;
     public $email;
     public $address;
     public $phone;
@@ -39,6 +40,7 @@ class CustomerComponent extends CustomMasterComponent
         $this->social_reason = '';
         $this->address = '';
         $this->phone = '';
+        $this->external_number = '';
         $this->closeModal('createCustomer');
         $this->closeModal('updateCustomer');
         $this->closeModal('deleteCustomer');
@@ -51,7 +53,8 @@ class CustomerComponent extends CustomMasterComponent
             'email' => 'required|email|unique:customers',
             'social_reason' => 'nullable|string|max:191',
             'address' => 'required|max:191',
-            'phone' => 'nullable|numeric'
+            'phone' => 'nullable|numeric',
+            'external_number' => 'required|numeric'
         ];
     }
 
@@ -74,6 +77,7 @@ class CustomerComponent extends CustomMasterComponent
             'rut' => $validatedData['rut'],
             'email' => $validatedData['email'],
             'social_reason' => $validatedData['social_reason'],
+            'external_number' => $validatedData['external_number'],
         ]);
         $customer->location_id = $location->id;
         $customer->save();
@@ -89,6 +93,7 @@ class CustomerComponent extends CustomMasterComponent
         $customer->rut = $validatedData['rut'];
         $customer->email = $validatedData['email'];
         $customer->social_reason = $validatedData['social_reason'];
+        $customer->external_number = $validatedData['external_number'];
 
         $location = Location::find( $customer->location_id);
         if ($location) {
@@ -112,6 +117,7 @@ class CustomerComponent extends CustomMasterComponent
             $this->social_reason = $customer->social_reason;
             $this->address = $customer->location->address;
             $this->phone = $customer->location->phone;
+            $this->external_number = $customer->external_number;
         }
         else {
             return redirect()->to('/clientes');

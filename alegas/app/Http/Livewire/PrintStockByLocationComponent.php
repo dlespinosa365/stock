@@ -22,9 +22,10 @@ class PrintStockByLocationComponent extends CustomMasterComponent
     {
         $date = Carbon::now()->toDateString();
         $location = Location::find($this->idLocation);
-        $products = Product::with('productType')->byCurrentLocation($this->idLocation)
+        $products = Product::join('product_types', 'product_types.id', '=', 'products.product_type_id')
+            ->orderBy('product_types.name')
+            ->byCurrentLocation($this->idLocation)
             ->IsOutFalse()
-            ->orderBy('serial_number')
             ->get();
         return view('livewire.print-stock-by-location', [
                'products_to_print' => $products,

@@ -18,11 +18,11 @@
 <body class="font-sans antialiased bg-light">
     <header>
         <div class="text-center mt-3">
-            <h3 class="">{{ $header }}</h3>
+            <h5 class="">{{ $header }}</h5>
         </div>
     </header>
     <!-- Page Content -->
-    <main class="container my-5">
+    <main class="container">
         {{ $slot }}
     </main>
 
