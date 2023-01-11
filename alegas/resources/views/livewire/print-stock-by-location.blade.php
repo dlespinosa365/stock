@@ -1,6 +1,6 @@
 <div>
         <h6>Stock para ubicacion: {{ $location->name }}</h6>
-        <table class="table table-sm">
+        <table class="table table-sm" style="font-size: smaller">
             <thead>
                 <tr>
                     <th scope="col">Producto</th>

@@ -12,7 +12,11 @@
     @livewireStyles
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <style>
+        @page {
+            margin: 0cm;
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased bg-light">
@@ -31,11 +35,11 @@
     <script>
         $(document).ready(function() {
             window.print();
-
         });
-        window.onafterprint = function(){
+        window.onafterprint = function() {
             window.location = window.location.origin + '/inicio'
         }
     </script>
 </body>
+
 </html>

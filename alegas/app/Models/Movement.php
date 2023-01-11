@@ -120,12 +120,9 @@ class Movement extends Model
 
             $isService = $location_to?->location_type === Location::$LOCATION_TYPE_CUSTOMER;
 
-            $isNew = !$location_from &&
-                            $location_to->location_type === Location::$LOCATION_TYPE_INTERN;
-            $isClientOut = !$location_to &&
-                                $location_from->location_type === Location::$LOCATION_TYPE_CUSTOMER;
-            $isLocalOut = !$location_to &&
-                            $location_from->location_type === Location::$LOCATION_TYPE_INTERN;
+            $isNew = !$location_from && $location_to?->location_type === Location::$LOCATION_TYPE_INTERN;
+            $isClientOut = !$location_to && $location_from?->location_type === Location::$LOCATION_TYPE_CUSTOMER;
+            $isLocalOut = !$location_to && $location_from?->location_type === Location::$LOCATION_TYPE_INTERN;
             if ($isService) {
                 $movement->movement_type_id = MovementType::$SERVICE;
             } elseif ($isNew) {

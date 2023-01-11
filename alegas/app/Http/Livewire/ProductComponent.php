@@ -98,7 +98,7 @@ class ProductComponent extends CustomMasterComponent
             return;
         }
         foreach ($this->serials as $serial) {
-            $product = $this->checkIfProductIsOut($serial);
+            $product = $this->getProdutBySerialNumber($serial);
             if ($product && $product->is_out) {
                 $product->is_out = false;
                 $product->product_type_id = $validateData['product_type_id'];
@@ -107,11 +107,14 @@ class ProductComponent extends CustomMasterComponent
                 $product->update();
                 array_push($mensages, 'El producto ' . $serial . ' ha sido ingresado nuevamente.');
             } else if ($product && !$product->is_out) {
-                array_push($mensages, 'El producto ' . $serial . ' no se ha podido ingresar porque ya estaba en el sistema.');
+                $product->is_out = true;
+                $product->save();
+                $this->createMovementForProductOut($product, $this->date_to_add);
+                array_push($mensages, 'El producto ' . $serial . ' ha sido dado de baja y de alta nuevamente.');
             } else {
                 $product = new Product();
                 $product->is_out = false;
-                $product->created_at =$this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
+                $product->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
                 $product->product_type_id = $validateData['product_type_id'];
                 $product->serial_number = strtoupper($serial);
                 $product->provider_id = $validateData['provider_id'];
@@ -129,18 +132,18 @@ class ProductComponent extends CustomMasterComponent
         $product = Product::find($this->product_id);
         $product->is_out = true;
         $product->save();
-        $this->createMovementForProductOut($product);
+        $this->createMovementForProductOut($product, $this->date_to_delete);
         $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();
 
     }
 
-    public function createMovementForProductOut($product)
+    public function createMovementForProductOut($product, $date_to_delete)
     {
         $movement = new Movement();
         $movement->product_id = $product->id;
-        $movement->location_from_id = $product->currentLocation->id;
-        $movement->created_at = $this->date_to_delete ?  Carbon::parse($this->date_to_delete)->toDateString() : Carbon::now()->toDateString();
+        $movement->location_from_id = $product->currentLocation?->id;
+        $movement->created_at = $date_to_delete ?  Carbon::parse($date_to_delete)->toDateString() : Carbon::now()->toDateString();
         $movement->save();
     }
 
@@ -148,7 +151,7 @@ class ProductComponent extends CustomMasterComponent
         $this->product_id = $product_id;
     }
 
-    public function checkIfProductIsOut($serial)
+    public function getProdutBySerialNumber($serial)
     {
         $product = Product::where('serial_number', strtoupper($serial))
             ->first();

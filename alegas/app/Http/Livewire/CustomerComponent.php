@@ -49,8 +49,8 @@ class CustomerComponent extends CustomMasterComponent
     protected function rules()
     {
         return [
-            'rut' => 'required|string|max:191|unique:customers',
-            'email' => 'required|email|unique:customers',
+            'rut' => 'required|string|max:191',
+            'email' => 'nullable|email',
             'social_reason' => 'nullable|string|max:191',
             'address' => 'required|max:191',
             'phone' => 'nullable|numeric',
