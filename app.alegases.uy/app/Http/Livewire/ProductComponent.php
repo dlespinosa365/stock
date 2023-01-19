@@ -100,7 +100,6 @@ class ProductComponent extends CustomMasterComponent
         foreach ($this->serials as $serial) {
             $product = $this->getProdutBySerialNumber($serial);
             if ($product && $product->is_out) {
-                $product->is_out = false;
                 $product->product_type_id = $validateData['product_type_id'];
                 $product->provider_id = $validateData['provider_id'];
                 $product->created_at =$this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
@@ -111,7 +110,6 @@ class ProductComponent extends CustomMasterComponent
                 array_push($mensages, 'El producto ' . $serial . ' ha sido dado de baja e ingrrsado nuevamente.');
             } else {
                 $product = new Product();
-                $product->is_out = false;
                 $product->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
                 $product->product_type_id = $validateData['product_type_id'];
                 $product->serial_number = strtoupper($serial);
@@ -137,9 +135,6 @@ class ProductComponent extends CustomMasterComponent
 
     public function markAsOut() {
         $product = Product::find($this->product_id);
-        $product->is_out = true;
-        $product->current_location_id = null;
-        $product->save();
         $this->createMovementDown($product, $this->date_to_delete);
         $this->sendSuccessMessageToSession('El producto ha sido dado de baja.');
         $this->resetForm();

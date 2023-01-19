@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 
+use App\Helpers\ProductHelper;
 use App\Models\Customer;
 use App\Models\Location;
 use App\Models\Movement;
@@ -96,33 +97,38 @@ class MovementListComponent extends CustomMasterComponent
             $this->show_error_missing_serials = true;
             return;
         }
+
         foreach ($this->serials as $serial) {
             $product = Product::with('currentLocation')->withSerialNumberStrict($serial)->first();
             if ($product) {
-                if ($product->is_out && !$this->location_id_to_add) {
-                    // verificamos que no se este haciendo una baja de un producto que ya esta de baja
-                    $erros_to_add[] = 'No se puede dar de baja el producto '.$serial.' porque ya esta en ese estado.';
+                $product_movements_validations = ProductHelper::validateProductMovement($product, $product->currentLocation?->id, $this->location_id_to_add);
+                // se aplica la validacion de movimientos antes de hacerlo
+                if ($product_movements_validations !== '') {
+                    $erros_to_add[] = $product_movements_validations;
                 } else {
-                    if (!$this->location_id_to_add) {
-                        // si es una baja hay que poner el producto en isout true y sin current location
-                        $product->is_out = true;
-                        $product->current_location_id = null;
-                        $product->save();
+                    // se es un movimiento valido se prosigue con las demas validaciones
+                    if ($product->is_out && !$this->location_id_to_add) {
+                        // verificamos que no se este haciendo una baja de un producto que ya esta de baja
+                        $erros_to_add[] = 'No se puede dar de baja el producto '.$serial.' porque ya esta en ese estado.';
                     } else {
-                        // si no es una baja de productos verificamos que este no este dado de baja ya
-                        // asi creamos el movimiento de ingreso automatico
-                        $this->addMovementIfProductIsOut($product);
+                        if (!$this->location_id_to_add) {
+                            // si es una baja hay que poner el producto en isout true y sin current location
+                            $product->save();
+                        } else {
+                            // si no es una baja de productos verificamos que este no este dado de baja ya
+                            // asi creamos el movimiento de ingreso automatico
+                            $this->addMovementIfProductIsOut($product);
+                        }
+                        $movement = new Movement();
+                        $movement->product_id = $product->id;
+                        $movement->location_from_id = $product->currentLocation?->id;
+                        $movement->location_to_id = $this->location_id_to_add ? $this->location_id_to_add : null;
+                        $movement->description = $this->description_to_add;
+                        $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
+                        $movement->save();
+                        $mensages[] = 'Se movio correctamente el producto '. $serial .'.';
                     }
-                    $movement = new Movement();
-                    $movement->product_id = $product->id;
-                    $movement->location_from_id = $product->currentLocation?->id;
-                    $movement->location_to_id = $this->location_id_to_add ? $this->location_id_to_add : null;
-                    $movement->description = $this->description_to_add;
-                    $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
-                    $movement->save();
-                    $mensages[] = 'Se movio correctamente el producto '. $serial .'.';
                 }
-
             } else {
                 $erros_to_add[] = 'No se pudo encontrar el producto '.$serial.'.';
             }
@@ -139,13 +145,11 @@ class MovementListComponent extends CustomMasterComponent
     public function addMovementIfProductIsOut($product)
     {
         if ($product->is_out) {
-            $product->is_out = false;
             $movement = new Movement();
             $movement->product_id = $product->id;
             $movement->description = 'Ingreso automatico';
             $movement->created_at = $this->date_to_add ?  Carbon::parse($this->date_to_add)->toDateString() : Carbon::now()->toDateString();
             $movement->location_to_id = Location::$LOCATION_INTERN_ID;
-            $product->save();
             $movement->save();
         }
     }

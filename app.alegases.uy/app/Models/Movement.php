@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\MovementHelper;
 use App\Observers\MovementObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -115,41 +116,19 @@ class Movement extends Model
     protected static function booted()
     {
         static::creating(function ($movement) {
+            $movement->movement_type_id = MovementHelper::resolveMovementType($movement);
+        });
 
-            if ($movement->location_from_id && !$movement->location_to_id) {
-                // si tiene location from y no location to
-                // aca es una baja de producto
-                // puede ser baja de local o baja de cliente
-                $location_from = Location::find($movement->location_from_id);
-                if ($location_from->location_type === Location::$LOCATION_TYPE_CUSTOMER) {
-                    // si la baja es desde un cliente
-                    $movement->movement_type_id = MovementType::$CLIENT_OUT;
-                } elseif ($location_from->location_type === Location::$LOCATION_TYPE_INTERN) {
-                    // si la baja es desde una locacion interna
-                    $movement->movement_type_id = MovementType::$LOCAL_OUT;
-                }
-            } else if (!$movement->location_from_id && $movement->location_to_id) {
-                 // si no tiene location from y si tiene location to
-                // aca es un ingreso de producto
-                $movement->movement_type_id = MovementType::$INGRESS;
-            } else if ($movement->location_to_id && $movement->location_from_id) {
-                // si tiene location from y tiene location to
-                // aca puede ser un movimiento interno o puede ser un servicio
-                $location_to = Location::find($movement->location_to_id);
-                if ($location_to->location_type === Location::$LOCATION_TYPE_CUSTOMER) {
-                    // si va hacia una locacion de cliente es  un servicio
-                    $movement->movement_type_id = MovementType::$SERVICE;
-                } else if ($location_to->location_type === Location::$LOCATION_TYPE_INTERN) {
-                    // si va hacia una locacion interna es in movimiento interno
-                    $movement->movement_type_id = MovementType::$INTERN;
-                } else if ($location_to->location_type === Location::$LOCATION_TYPE_TRUCK) {
-                    // si va hacia una locacion camion es un movimiento interno
-                    $movement->movement_type_id = MovementType::$INTERN;
-                }
+        static::created(function ($movement) {
+            $product = Product::find($movement->product_id);
+            if ($movement->movement_type_id === MovementType::$LOCAL_OUT ||
+                $movement->movement_type_id === MovementType::$CLIENT_OUT) {
+                $product->is_out = true;
+                $product->current_location_id = null;
             } else {
-                //si no tiene ninguna de las 2 lo consideraremos como una baja
-                $movement->movement_type_id = MovementType::$LOCAL_OUT;
+                $product->is_out = false;
             }
+            $product->save();
         });
     }
 }
