@@ -6,6 +6,7 @@
                     <th scope="col">Producto</th>
                     <th scope="col">Numero de Serie</th>
                     <th scope="col">Ubicacion</th>
+                    <th scope="col">Ultimo movimiento</th>
                 </tr>
             </thead>
             <tbody>
@@ -14,6 +15,7 @@
                         <td>{{ $p->productType?->name }}</td>
                         <td>{{ $p->serial_number }}</td>
                         <td>{{ $p->currentLocation?->name }}</td>
+                        <td>{{ $p->dateOfLastMovement()?->toFormattedDateString() }}</td>
                     </tr>
                 @endforeach
             </tbody>

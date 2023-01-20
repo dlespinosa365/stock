@@ -31,6 +31,7 @@
                             <th>Tipo</th>
                             <th>Numero de serie</th>
                             <th>Ubicacion</th>
+                            <th>Ultimo Movimiento</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -40,6 +41,7 @@
                                 <td>{{ $product->productType?->name }}</td>
                                 <td>{{ $product->serial_number }}</td>
                                 <td>{{ $product->currentLocation?->name }}</td>
+                                <td>{{ $product->dateOfLastMovement()?->toFormattedDateString() }}</td>
                                 <td>
                                     <button type="button" data-bs-toggle="modal"
                                         data-bs-target="#showThreeLastMovement" class="btn btn-outline-primary"

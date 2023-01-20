@@ -24,9 +24,30 @@ class Product extends Model
         return $this->belongsTo(Provider::class, 'provider_id');
     }
 
+
     public function currentLocation()
     {
         return $this->belongsTo(Location::class, 'current_location_id');
+    }
+
+
+    public function movements()
+    {
+        return $this->hasMany(Movement::class);
+    }
+
+    public function orderedByDateMovements()
+    {
+        return $this->movements()->orderBy('id', 'desc');
+    }
+
+    public function dateOfLastMovement()
+    {
+        $movements = $this->orderedByDateMovements();
+        if ($movements->count() > 0) {
+            return $movements->first()->created_at;
+        }
+        return null;
     }
 
     public function scopeByCurrentLocation($query, $location_id) {

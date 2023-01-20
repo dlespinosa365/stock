@@ -26,6 +26,7 @@ class PrintStockByLocationComponent extends CustomMasterComponent
             ->orderBy('product_types.name')
             ->byCurrentLocation($this->idLocation)
             ->IsOutFalse()
+            ->select('products.*')
             ->get();
         return view('livewire.print-stock-by-location', [
                'products_to_print' => $products,

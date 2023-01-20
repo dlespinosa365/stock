@@ -47,9 +47,10 @@ class StockComponent extends CustomMasterComponent
 
     public function print()
     {
-        if ($this->locationId) {
+        $locationId = $this->locationId;
+        if ($locationId) {
             $this->locationId = null;
-            return redirect()->to('/imprimir-stock-por-ubicacion/'. $this->locationId);
+            return redirect()->to('/imprimir-stock-por-ubicacion/'. $locationId);
         }
         $this->sendErrorMessageToSession('Debe seleccionar una ubicacion para imprimir');
     }
